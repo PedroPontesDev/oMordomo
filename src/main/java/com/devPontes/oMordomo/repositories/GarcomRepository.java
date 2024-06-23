@@ -9,7 +9,7 @@ import com.devPontes.oMordomo.model.entities.Garcom;
 
 public interface GarcomRepository extends JpaRepository<Garcom, Long> {
 
-	@Query("SELECT g FROM Garcom WHERE g.id =: id" )
+	@Query("SELECT g FROM Garcom g WHERE g.id = :id" )
 	Optional<Garcom> findById(Long id);
 	
 }

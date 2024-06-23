@@ -32,8 +32,10 @@ public class GarcomServicesImpl implements GarcomServices {
 
 	@Override
 	public GarcomDTO procurarPorId(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		var entidade = garcomRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+		if(entidade == null) throw new Exception("Garcom não pôde ser encontrado, tente novamente!");
+		var dto = MyMapper.parseObject(entidade, GarcomDTO.class);
+		return dto;
 	}
 
 	@Override
