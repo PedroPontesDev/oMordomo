@@ -30,19 +30,13 @@ public class Garcom extends Usuario implements Serializable{
 	@Column(name = "houve_falta")
 	private Boolean teveFalta;
 
-	@ManyToMany
-	@JoinTable(name = "tb_gorjeta_garcom", joinColumns = @JoinColumn(name = "garcom_id"),
-	inverseJoinColumns = @JoinColumn(name = "gorjeta_id"))
-	private Set<Gorjeta> gorjetas = new TreeSet<>();
-
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			LocalDateTime horasTrabalhadasMes, Boolean teveFalta, Set<Gorjeta> gorjetas) {
+			LocalDateTime horasTrabalhadasMes, Boolean teveFalta) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.teveFalta = teveFalta;
-		this.gorjetas = gorjetas;
 	}
 
 	public Garcom() {
@@ -75,20 +69,13 @@ public class Garcom extends Usuario implements Serializable{
 		this.teveFalta = teveFalta;
 	}
 
-	public Set<Gorjeta> getGorjetas() {
-		return gorjetas;
-	}
 
-	public void setGorjetas(Set<Gorjeta> gorjetas) {
-		this.gorjetas = gorjetas;
-	}
 
-	
 	
 	@Override
 	public String toString() {
 		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes + ", teveFalta="
-				+ teveFalta + ", gorjetas=" + gorjetas + "]";
+				+ teveFalta + "";
 	}
 
 	

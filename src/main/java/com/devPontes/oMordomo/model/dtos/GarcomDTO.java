@@ -3,12 +3,8 @@ package com.devPontes.oMordomo.model.dtos;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.springframework.hateoas.RepresentationModel;
-
-import com.devPontes.oMordomo.model.entities.Gorjeta;
 
 
 public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Serializable {
@@ -27,10 +23,9 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Boolean teveFalta;
 
-	private Set<Gorjeta> gorjetas = new TreeSet<>();
 
 	public GarcomDTO(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			LocalDateTime horasTrabalhadasMes, Boolean teveFalta, Set<Gorjeta> gorjetas) {
+			LocalDateTime horasTrabalhadasMes, Boolean teveFalta) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -40,7 +35,6 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.teveFalta = teveFalta;
-		this.gorjetas = gorjetas;
 	}
 	
 	public GarcomDTO() {
@@ -119,13 +113,6 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.teveFalta = teveFalta;
 	}
 
-	public Set<Gorjeta> getGorjetas() {
-		return gorjetas;
-	}
-
-	public void setGorjetas(Set<Gorjeta> gorjetas) {
-		this.gorjetas = gorjetas;
-	}
 
 	@Override
 	public int hashCode() {
@@ -151,8 +138,10 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 	public String toString() {
 		return "GarcomDTO [id=" + id + ", fullName=" + fullName + ", email=" + email + ", username=" + username
 				+ ", password=" + password + ", cpf=" + cpf + ", salario=" + salario + ", horasTrabalhadasMes="
-				+ horasTrabalhadasMes + ", teveFalta=" + teveFalta + ", gorjetas=" + gorjetas + "]";
+				+ horasTrabalhadasMes + ", teveFalta=" + teveFalta + "]";
 	}
+
+
 	
 	
 	

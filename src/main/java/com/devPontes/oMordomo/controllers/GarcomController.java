@@ -6,16 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.services.impl.GarcomServicesImpl;
 
 @RestController
-@RequestMapping(path = "/garcoms")
+@RequestMapping(path = "/garcoms/v1/")
 public class GarcomController {
 	
 	@Autowired
@@ -28,11 +31,32 @@ public class GarcomController {
 		return new ResponseEntity<>(todosGarcom, HttpStatus.ACCEPTED);
 	}
 	
+	@GetMapping(path = "/search/buscar-id/{id}")
+	public ResponseEntity<GarcomDTO> buscarPorId(@PathVariable Long id) throws Exception {
+		var garcom = garcomServices.procurarPorId(id);
+		return new ResponseEntity<>(garcom, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping(path = "/search/buscar-cpf")
+	public ResponseEntity<GarcomDTO> buscarPorCpf(@RequestParam Long cpf) throws Exception{
+		var garcom = garcomServices.procurarPorCpf(cpf);
+		return new ResponseEntity<>(garcom, HttpStatus.FOUND);
+	}
+	
 	@PostMapping(path = "/registrar-garcom")
 	public ResponseEntity<GarcomDTO> registrarGarcom(@RequestBody GarcomDTO novoGarcom) throws Exception {
 		GarcomDTO novaEntidade = garcomServices.registrarNovoGarcom(novoGarcom);
 		return new ResponseEntity<>(novaEntidade, HttpStatus.CREATED);
 	}
+	
+	@PutMapping(path = "/atualizar-garcom/{id}")
+	public ResponseEntity<GarcomDTO> atualizarGarcomExistente(@PathVariable Long id, @RequestBody GarcomDTO updateGarcom) throws Exception {
+		var garcomUpdated = garcomServices.atualizarGarcomExistente(id, updateGarcom);
+		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
+	}
+	
+	
 	
 	
 	

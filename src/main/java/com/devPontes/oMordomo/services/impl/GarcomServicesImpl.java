@@ -13,6 +13,8 @@ import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
 import com.devPontes.oMordomo.services.GarcomServices;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class GarcomServicesImpl implements GarcomServices {
 	
@@ -40,10 +42,14 @@ public class GarcomServicesImpl implements GarcomServices {
 
 	@Override
 	public GarcomDTO procurarPorCpf(Long cpf) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Garcom> entidade = garcomRepository.procurarPorCpf(cpf);
+		if(entidade.isPresent()) {
+			GarcomDTO dto = MyMapper.parseObject(entidade.get(), GarcomDTO.class);
+			return dto;
+		} throw new Exception("");
 	}
 
+	@Transactional
 	@Override
 	public GarcomDTO registrarNovoGarcom(GarcomDTO novoGarcom) throws Exception {
 		Garcom entidade = MyMapper.parseObject(novoGarcom, Garcom.class);
@@ -53,6 +59,7 @@ public class GarcomServicesImpl implements GarcomServices {
 		return dto;
 	}
 
+	@Transactional
 	@Override
 	public GarcomDTO atualizarGarcomExistente(Long garcomId, GarcomDTO update) throws Exception {
 		Optional<Garcom> entidadeExistente = garcomRepository.findById(garcomId);
@@ -61,7 +68,6 @@ public class GarcomServicesImpl implements GarcomServices {
 			entity.setCpf(update.getCpf());
 			entity.setEmail(update.getEmail());
 			entity.setFullName(update.getFullName());
-			entity.setGorjetas(update.getGorjetas());
 			entity.setHorasTrabalhadasMes(update.getHorasTrabalhadasMes());
 			entity.setSalario(update.getSalario());
 			entity.setTeveFalta(update.getTeveFalta());
@@ -75,6 +81,7 @@ public class GarcomServicesImpl implements GarcomServices {
 		}
 	}
 
+	@Transactional
 	@Override
 	public GarcomDTO alterarSalarioGarcom(Long garcomId, Double novoSalario) throws Exception {
 		var garcom = garcomRepository.findById(garcomId);
