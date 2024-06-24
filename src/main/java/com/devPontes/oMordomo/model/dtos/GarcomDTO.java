@@ -1,7 +1,7 @@
 package com.devPontes.oMordomo.model.dtos;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -19,13 +19,12 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Double salario;
 
-	private LocalDateTime horasTrabalhadasMes;
+	private BigDecimal horasTrabalhadasMes;
 
 	private Boolean teveFalta;
 
-
 	public GarcomDTO(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			LocalDateTime horasTrabalhadasMes, Boolean teveFalta) {
+			BigDecimal horasTrabalhadasMes, Boolean teveFalta) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -97,11 +96,11 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.salario = salario;
 	}
 
-	public LocalDateTime getHorasTrabalhadasMes() {
+	public BigDecimal getHorasTrabalhadasMes() {
 		return horasTrabalhadasMes;
 	}
 
-	public void setHorasTrabalhadasMes(LocalDateTime horasTrabalhadasMes) {
+	public void setHorasTrabalhadasMes(BigDecimal horasTrabalhadasMes) {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
 

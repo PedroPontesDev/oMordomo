@@ -105,12 +105,6 @@ public class GarcomServicesImpl implements GarcomServices {
 	}
 
 	@Override
-	public ComandaDTO calcularDezPorcento(Long comandaId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void deletarGarcomExistente(Long garcomId) throws Exception {
 		var entity = garcomRepository.findById(garcomId);
 		if(entity.isPresent()) {

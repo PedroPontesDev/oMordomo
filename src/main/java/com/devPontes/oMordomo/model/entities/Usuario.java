@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "usuario_tipo", discriminatorType = DiscriminatorType.STRING)
-public  class Usuario implements Serializable {
+public abstract class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

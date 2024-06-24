@@ -15,7 +15,6 @@ public interface GarcomServices {
 	GarcomDTO alterarSalarioGarcom(Long garcomId, Double novoSalario) throws Exception;
 	ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda) throws Exception; 
 	ComandaDTO fecharComanda(Long comandaId) throws Exception;
-	ComandaDTO calcularDezPorcento(Long comandaId) throws Exception;
 	void deletarGarcomExistente(Long garcomId) throws Exception;
 	
 	//Criar depois a entidade ITEM para incluir na entidade de Comanda
