@@ -16,7 +16,7 @@ import com.devPontes.oMordomo.services.GarcomServices;
 import jakarta.transaction.Transactional;
 
 @Service
-public class GarcomServicesImpl implements GarcomServices {
+public class BatedorDePontoServicesImpl implements GarcomServices {
 	
 	@Autowired
 	GarcomRepository garcomRepository;

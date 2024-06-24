@@ -21,7 +21,7 @@ public class Garcom extends Usuario implements Serializable {
 	private Double salario;
 
 	@Column(name = "total_horas_trabalhadas")
-	private BigDecimal horasTrabalhadasMes;
+	private Long horasTrabalhadasMes;
 
 	@Column(name = "houve_falta_mes")
 	private Boolean teveFalta;
@@ -30,7 +30,7 @@ public class Garcom extends Usuario implements Serializable {
 	private BatedorDePonto batedorPonto;
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			BigDecimal horasTrabalhadasMes, Boolean teveFalta, BatedorDePonto batedorPonto) {
+			Long horasTrabalhadasMes, Boolean teveFalta, BatedorDePonto batedorPonto) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
@@ -50,11 +50,11 @@ public class Garcom extends Usuario implements Serializable {
 		this.salario = salario;
 	}
 
-	public BigDecimal getHorasTrabalhadasMes() {
+	public Long getHorasTrabalhadasMes() {
 		return horasTrabalhadasMes;
 	}
 
-	public void setHorasTrabalhadasMes(BigDecimal horasTrabalhadasMes) {
+	public void setHorasTrabalhadasMes(Long horasTrabalhadasMes) {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
 

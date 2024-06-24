@@ -5,10 +5,12 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_cliente")
+@PrimaryKeyJoinColumn(name = "usuario.id")
 @DiscriminatorValue("CLIENTE")
 public class Cliente extends Usuario {
 	private static final long serialVersionUID = 1L;

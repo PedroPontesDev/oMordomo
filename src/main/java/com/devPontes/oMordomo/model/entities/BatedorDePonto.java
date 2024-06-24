@@ -1,7 +1,7 @@
 package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,11 +31,14 @@ public class BatedorDePonto implements Serializable {
 	@Column(name = "horario_saida")
 	private LocalDateTime horarioSaida;
 
-	@Column(name = "data_ponto")
+	@Column(name = "data")
 	private LocalDate dataMes;
 
 	@OneToMany(mappedBy = "batedorPonto", fetch = FetchType.EAGER)
 	private List<Garcom> garcoms = new ArrayList<>();
+
+	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.LAZY)
+	private List<Ponto> pontos = new ArrayList<>();
 
 	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, List<Garcom> garcoms) {
 		this.id = id;
@@ -80,16 +83,28 @@ public class BatedorDePonto implements Serializable {
 		this.garcoms = garcoms;
 	}
 
-	public Integer totalDeHorasTrabalhadasMes(LocalDateTime horarioEntrada, LocalDateTime horarioSaida,
-			LocalDate dataMes) {
-		var horaDeEntrada = horarioEntrada.getHour();
-		var horarioDeSaida = horarioSaida.getHour();
-		var mes = dataMes.getMonthValue();
+	public LocalDate getDataMes() {
+		return dataMes;
+	}
 
-		Integer totalHoras = (horaDeEntrada + horarioDeSaida) * mes;
+	public void setDataMes(LocalDate dataMes) {
+		this.dataMes = dataMes;
+	}
 
+	public List<Ponto> getPontos() {
+		return pontos;
+	}
+
+	public void setPontos(List<Ponto> pontos) {
+		this.pontos = pontos;
+	}
+
+	public Long totalDeHorasTrabalhadasMes() {
+		long totalHoras = 0;
+		var pontos = garcoms.stream().flatMap(g -> g.getBatedorPonto().getPontos().stream());
+		var total = pontos.mapToLong(p -> Duration.between(p.getHorarioEntrada(), p.getHorarioSaida()).toHours()).sum();
+		totalHoras = total;
 		return totalHoras;
-
 	}
 
 }

@@ -19,12 +19,12 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Double salario;
 
-	private BigDecimal horasTrabalhadasMes;
+	private Long horasTrabalhadasMes;
 
 	private Boolean teveFalta;
 
 	public GarcomDTO(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			BigDecimal horasTrabalhadasMes, Boolean teveFalta) {
+			Long horasTrabalhadasMes, Boolean teveFalta) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -96,11 +96,11 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.salario = salario;
 	}
 
-	public BigDecimal getHorasTrabalhadasMes() {
+	public Long getHorasTrabalhadasMes() {
 		return horasTrabalhadasMes;
 	}
 
-	public void setHorasTrabalhadasMes(BigDecimal horasTrabalhadasMes) {
+	public void setHorasTrabalhadasMes(Long horasTrabalhadasMes) {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
 
