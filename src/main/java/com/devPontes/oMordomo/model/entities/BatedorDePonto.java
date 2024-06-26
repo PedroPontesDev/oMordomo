@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,27 +35,25 @@ public class BatedorDePonto implements Serializable {
 	private LocalDateTime horarioSaida;
 
 	@Column(name = "data")
-	private LocalDate dataMes;
-	
-	@Column(name = "data_falta")
-	private LocalDate dataFalta;
+	private LocalDate dataDoMes;
 
+	@Column(name = "dia_falta")
+	private LocalDate dataDaFalta;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.LAZY)
 	private List<Ponto> pontos = new ArrayList<>();
 
 	@Column(name = "houve_falta_mes")
 	private Boolean teveFalta;
 
-
-	
-	
-	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataMes,
+	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataDoMes,
 			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta) {
 		this.id = id;
 		this.horarioEntrada = horarioEntrada;
 		this.horarioSaida = horarioSaida;
-		this.dataMes = dataMes;
-		this.dataFalta = dataFalta;
+		this.dataDoMes = dataDoMes;
+		this.dataDaFalta = dataFalta;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
 	}
@@ -85,12 +86,12 @@ public class BatedorDePonto implements Serializable {
 		this.horarioSaida = horarioSaida;
 	}
 
-	public LocalDate getDataFalta() {
-		return dataFalta;
+	public LocalDate getDataDaFalta() {
+		return dataDaFalta;
 	}
 
 	public void setDataFalta(LocalDate dataFalta) {
-		this.dataFalta = dataFalta;
+		this.dataDaFalta = dataFalta;
 	}
 
 	public Boolean getTeveFalta() {
@@ -108,24 +109,45 @@ public class BatedorDePonto implements Serializable {
 	public void setPontos(List<Ponto> pontos) {
 		this.pontos = pontos;
 	}
-	
-	
 
-	public LocalDate getDataMes() {
-		return dataMes;
+	public LocalDate getdataDoMes() {
+		return dataDoMes;
 	}
 
-	public void setDataMes(LocalDate dataMes) {
-		this.dataMes = dataMes;
+	public void setdataDoMes(LocalDate dataDoMes) {
+		this.dataDoMes = dataDoMes;
 	}
 
 	public Long calcularTotalDeHorasTrabalhadasMes(Garcom garcom) {
-		var calculo = pontos.stream().filter(p -> p.getHorarioEntrada()
-				.getMonth().equals(this.dataMes.getMonth()))
-				.mapToLong(p -> Duration.between(p.getHorarioEntrada(), p.getHorarioSaida())
-						.toHours()).sum();
+		var calculo = pontos.stream().filter(p -> p.getGarcom().equals(garcom))
+				.filter(p -> p.getHorarioEntrada().getMonth().equals(this.dataDoMes.getMonth()))
+				.mapToLong(p -> Duration.between(p.getHorarioEntrada(), p.getHorarioSaida()).toHours()).sum();
 		garcom.setHorasTrabalhadasMes(calculo);
 		return calculo;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BatedorDePonto other = (BatedorDePonto) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "BatedorDePonto [id=" + id + ", horarioEntrada=" + horarioEntrada + ", horarioSaida=" + horarioSaida
+				+ ", dataDoMes=" + dataDoMes + ", dataDaFalta=" + dataDaFalta + ", pontos=" + pontos + ", teveFalta="
+				+ teveFalta + "]";
 	}
 
 }

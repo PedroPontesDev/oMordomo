@@ -29,7 +29,7 @@ public class Ponto {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private BatedorDePonto batedorDePonto;
 
-	@OneToOne(mappedBy = "pontogGarcom")
+	@OneToOne(mappedBy = "pontoGarcom")
 	private Garcom garcom;
 	
 	public Ponto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, BatedorDePonto batedorDePonto,

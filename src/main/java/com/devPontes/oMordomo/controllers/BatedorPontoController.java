@@ -19,8 +19,8 @@ import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.services.impl.GarcomServicesImpl;
 
 @RestController
-@RequestMapping(path = "/api/v1/garcom")
-public class GarcomController {
+@RequestMapping(path = "/garcoms/v1/")
+public class BatedorPontoController {
 	
 	@Autowired
 	private GarcomServicesImpl garcomServices;
