@@ -1,7 +1,7 @@
 package com.devPontes.oMordomo.services.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.devPontes.oMordomo.model.dtos.BatedorDePontoDTO;
 import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.model.entities.BatedorDePonto;
+import com.devPontes.oMordomo.model.entities.Ponto;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.BatedorPontoRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
@@ -19,14 +20,15 @@ import com.devPontes.oMordomo.services.BatedorDePontoServices;
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
-	
+
 	@Autowired
 	GarcomRepository garcomRepository;
-	
+
 	@Autowired
 	PontoRepository pontoRepository;
-	
+
 	@Autowired
 	BatedorPontoRepository batedorRepository;
 
@@ -38,9 +40,11 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 
 	@Override
 	public BatedorDePontoDTO criarNovoBatedorPonto(BatedorDePontoDTO novoBatedor) throws Exception {
-		if(novoBatedor == null) throw new Exception("Os dados estão inconsistentes, tente novamente!");
+		if (novoBatedor == null)
+			throw new Exception("Os dados estão inconsistentes, tente novamente!");
 		BatedorDePonto newBatedor = MyMapper.parseObject(novoBatedor, BatedorDePonto.class);
-		if(newBatedor == null)throw new Exception("Os dados estão inconsistentes, tente novamente!");
+		if (newBatedor == null)
+			throw new Exception("Os dados estão inconsistentes, tente novamente!");
 		batedorRepository.save(newBatedor);
 		var dto = MyMapper.parseObject(newBatedor, BatedorDePontoDTO.class);
 		return dto;
@@ -49,16 +53,38 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	@Override
 	public BatedorDePontoDTO exibirBatedorPorId(Long batedorId) throws Exception {
 		var entidade = batedorRepository.findById(batedorId);
-		if(entidade.isPresent()) {
-			var dto = MyMapper.parseObject(entidade.get(), BatedorDePontoDTO.class); 
+		if (entidade.isPresent()) {
+			var dto = MyMapper.parseObject(entidade.get(), BatedorDePontoDTO.class);
 			return dto;
-		} throw new Exception("O batedor de ponto não existe!");
+		}
+		throw new Exception("O batedor de ponto não existe!");
 	}
 
 	@Override
 	public BatedorDePontoDTO registrarPontoFuncionario(PontoDTO ponto, Long funcionarioId, Long batedorId)
 			throws Exception {
-			return null;
+		Ponto pontoNovo = MyMapper.parseObject(ponto, Ponto.class);
+		var funcionario = garcomRepository.findById(funcionarioId);
+		var batedor = batedorRepository.findById(batedorId);
+		if (batedor.isPresent() && funcionario.isPresent()) {
+			pontoNovo.setGarcom(funcionario.get());
+			BatedorDePonto registro = batedor.get();
+			registro.getPontos().add(pontoNovo);
+			registro.setHorarioEntrada(pontoNovo.getHorarioEntrada());
+			registro.setHorarioSaida(pontoNovo.getHorarioSaida());
+			registro.setTeveFalta(false);
+			registro.setDataDoMes(LocalDate.now());
+			registro.setDataDaFalta(null);
+			registro.setPontos(new ArrayList<>());
+			registro.setNomeBatedor(batedor.get().getNomeBatedor());
+			pontoRepository.save(pontoNovo);
+			batedorRepository.save(registro);
+			funcionario.get().setPontoGarcom(pontoNovo);
+			garcomRepository.save(funcionario.get());
+			var dto = MyMapper.parseObject(registro, BatedorDePontoDTO.class);
+		}
+		throw new Exception("Não foi possivel registrar do funcionario!");
+
 	}
 
 	@Override
@@ -92,4 +118,3 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 }
-	

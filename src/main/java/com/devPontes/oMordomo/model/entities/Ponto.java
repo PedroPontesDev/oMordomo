@@ -3,6 +3,8 @@ package com.devPontes.oMordomo.model.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

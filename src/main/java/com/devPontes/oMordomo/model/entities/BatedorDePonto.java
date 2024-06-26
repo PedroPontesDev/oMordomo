@@ -28,6 +28,9 @@ public class BatedorDePonto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "nome")
+	private String nomeBatedor;
+
 	@Column(name = "horario_entrada")
 	private LocalDateTime horarioEntrada;
 
@@ -48,7 +51,7 @@ public class BatedorDePonto implements Serializable {
 	private Boolean teveFalta;
 
 	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataDoMes,
-			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta) {
+			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta, String nomeBatedor) {
 		this.id = id;
 		this.horarioEntrada = horarioEntrada;
 		this.horarioSaida = horarioSaida;
@@ -56,6 +59,7 @@ public class BatedorDePonto implements Serializable {
 		this.dataDaFalta = dataFalta;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
+		this.nomeBatedor = nomeBatedor;
 	}
 
 	public BatedorDePonto() {
@@ -116,6 +120,26 @@ public class BatedorDePonto implements Serializable {
 
 	public void setdataDoMes(LocalDate dataDoMes) {
 		this.dataDoMes = dataDoMes;
+	}
+
+	public String getNomeBatedor() {
+		return nomeBatedor;
+	}
+
+	public void setNomeBatedor(String nomeBatedor) {
+		this.nomeBatedor = nomeBatedor;
+	}
+
+	public LocalDate getDataDoMes() {
+		return dataDoMes;
+	}
+
+	public void setDataDoMes(LocalDate dataDoMes) {
+		this.dataDoMes = dataDoMes;
+	}
+
+	public void setDataDaFalta(LocalDate dataDaFalta) {
+		this.dataDaFalta = dataDaFalta;
 	}
 
 	public Long calcularTotalDeHorasTrabalhadasMes(Garcom garcom) {

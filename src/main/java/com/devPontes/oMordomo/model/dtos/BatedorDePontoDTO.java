@@ -21,6 +21,8 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	
 	private Long id;
 	
+	private String nome;
+	
 	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ss", shape = Shape.STRING)
 	private LocalDateTime horarioEntrada;
 	
