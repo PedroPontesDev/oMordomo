@@ -13,7 +13,7 @@ public interface GarcomServices {
 	GarcomDTO registrarNovoGarcom(GarcomDTO novoGarcom) throws Exception;
 	GarcomDTO atualizarGarcomExistente(Long garcomId, GarcomDTO update) throws Exception;
 	GarcomDTO alterarSalarioGarcom(Long garcomId, Double novoSalario) throws Exception;
-	ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda) throws Exception; 
+	ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, Long garcomId) throws Exception; 
 	ComandaDTO fecharComanda(Long comandaId) throws Exception;
 	void deletarGarcomExistente(Long garcomId) throws Exception;
 	

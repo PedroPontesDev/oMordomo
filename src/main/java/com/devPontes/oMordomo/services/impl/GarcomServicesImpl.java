@@ -3,11 +3,14 @@ package com.devPontes.oMordomo.services.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+import com.devPontes.oMordomo.model.entities.Comanda;
 import com.devPontes.oMordomo.model.entities.Garcom;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
@@ -24,12 +27,12 @@ public class GarcomServicesImpl implements GarcomServices {
 	//A implementar o repositorio de Comandas
 
 	@Override
-	public List<GarcomDTO> listarTodos() throws Exception {
+	public List<GarcomDTO> listarTodos() throws AccountNotFoundException  {
 		var todosGarcom = garcomRepository.findAll();
 		if(!todosGarcom.isEmpty() && todosGarcom != null) {
 			var dto = MyMapper.parseListObjects(todosGarcom, GarcomDTO.class);
 			return dto;
-		} throw new Exception("Nenhum garçom registrado ainda!");
+		} throw new AccountNotFoundException("Nenhum garçom registrado ainda!");
 	}
 
 	@Override
@@ -70,7 +73,6 @@ public class GarcomServicesImpl implements GarcomServices {
 			entity.setFullName(update.getFullName());
 			entity.setHorasTrabalhadasMes(update.getHorasTrabalhadasMes());
 			entity.setSalario(update.getSalario());
-			entity.setTeveFalta(update.getTeveFalta());
 			entity.setPassword(update.getPassword());
 			entity.setUsername(update.getUsername());
 			entity = garcomRepository.save(entity);
@@ -94,9 +96,10 @@ public class GarcomServicesImpl implements GarcomServices {
 	}
 
 	@Override
-	public ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, Long garcomId) throws Exception {
+		Comanda novaComanda = MyMapper.parseObject(abrirComanda, Comanda.class);
+		return abrirComanda;
+		
 	}
 
 	@Override

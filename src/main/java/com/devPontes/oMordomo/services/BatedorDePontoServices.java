@@ -1,14 +1,14 @@
 package com.devPontes.oMordomo.services;
 
-import java.util.List;
-
 import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+import com.devPontes.oMordomo.model.dtos.PontoDTO;
+import com.devPontes.oMordomo.model.entities.BatedorDePonto;
 
 public interface BatedorDePontoServices {
 	
-	List<GarcomDTO> listarTodos() throws Exception;
-	GarcomDTO procurarPorId(Long id) throws Exception;
+	void atrelaGarcomComanda(Long garcomId, Long comandaId) throws Exception;
+	BatedorDePonto RegistrarPonto(PontoDTO ponto) throws Exception;
 	GarcomDTO procurarPorCpf(Long cpf) throws Exception;
 	GarcomDTO registrarNovoGarcom(GarcomDTO novoGarcom) throws Exception;
 	GarcomDTO atualizarGarcomExistente(Long garcomId, GarcomDTO update) throws Exception;

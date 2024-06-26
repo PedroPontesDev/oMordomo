@@ -22,19 +22,15 @@ public class Garcom extends Usuario implements Serializable {
 
 	@Column(name = "total_horas_trabalhadas")
 	private Long horasTrabalhadasMes;
-
-	@Column(name = "houve_falta_mes")
-	private Boolean teveFalta;
 	
 	@OneToMany
 	private BatedorDePonto batedorPonto;
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, Boolean teveFalta, BatedorDePonto batedorPonto) {
+			Long horasTrabalhadasMes, BatedorDePonto batedorPonto) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
-		this.teveFalta = teveFalta;
 		this.batedorPonto = batedorPonto;
 	}
 
@@ -57,14 +53,6 @@ public class Garcom extends Usuario implements Serializable {
 	public void setHorasTrabalhadasMes(Long horasTrabalhadasMes) {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
-
-	public Boolean getTeveFalta() {
-		return teveFalta;
-	}
-
-	public void setTeveFalta(Boolean teveFalta) {
-		this.teveFalta = teveFalta;
-	}
 	
 	
 
@@ -78,8 +66,7 @@ public class Garcom extends Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes + ", teveFalta="
-				+ teveFalta + "";
+		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes;
 	}
 
 }

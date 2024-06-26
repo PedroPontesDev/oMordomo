@@ -39,12 +39,22 @@ public class BatedorDePonto implements Serializable {
 
 	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.LAZY)
 	private List<Ponto> pontos = new ArrayList<>();
+	
+	@Column(name = "houve_falta_mes")
+	private Boolean teveFalta;
+	
+	
+	
 
-	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, List<Garcom> garcoms) {
+	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataMes,
+			List<Garcom> garcoms, List<Ponto> pontos, Boolean teveFalta) {
 		this.id = id;
 		this.horarioEntrada = horarioEntrada;
 		this.horarioSaida = horarioSaida;
+		this.dataMes = dataMes;
 		this.garcoms = garcoms;
+		this.pontos = pontos;
+		this.teveFalta = teveFalta;
 	}
 
 	public BatedorDePonto() {
