@@ -1,12 +1,12 @@
 package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -22,16 +22,16 @@ public class Garcom extends Usuario implements Serializable {
 
 	@Column(name = "total_horas_trabalhadas")
 	private Long horasTrabalhadasMes;
-	
-	@OneToMany
-	private BatedorDePonto batedorPonto;
+
+	@OneToOne
+	private Ponto pontoGarcom;
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, BatedorDePonto batedorPonto) {
+			Long horasTrabalhadasMes, Ponto ponto) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
-		this.batedorPonto = batedorPonto;
+		this.pontoGarcom = ponto;
 	}
 
 	public Garcom() {
@@ -53,20 +53,37 @@ public class Garcom extends Usuario implements Serializable {
 	public void setHorasTrabalhadasMes(Long horasTrabalhadasMes) {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
-	
-	
 
-	public BatedorDePonto getBatedorPonto() {
-		return batedorPonto;
+	public Ponto getPontoGarcom() {
+		return pontoGarcom;
 	}
 
-	public void setBatedorPonto(BatedorDePonto batedorPonto) {
-		this.batedorPonto = batedorPonto;
+	public void setPontoGarcom(Ponto pontoGarcom) {
+		this.pontoGarcom = pontoGarcom;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(horasTrabalhadasMes, pontoGarcom, salario);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Garcom other = (Garcom) obj;
+		return Objects.equals(horasTrabalhadasMes, other.horasTrabalhadasMes)
+				&& Objects.equals(pontoGarcom, other.pontoGarcom) && Objects.equals(salario, other.salario);
 	}
 
 	@Override
 	public String toString() {
-		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes;
+		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes + ", pontoGarcom="
+				+ pontoGarcom + "]";
 	}
 
 }

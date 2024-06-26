@@ -5,7 +5,7 @@ import java.util.List;
 import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 
-public interface GarcomServices {
+public interface PontoServices {
 	
 	List<GarcomDTO> listarTodos() throws Exception;
 	GarcomDTO procurarPorId(Long id) throws Exception;

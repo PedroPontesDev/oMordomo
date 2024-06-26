@@ -103,9 +103,9 @@ public class GarcomServicesImpl implements GarcomServices {
 	}
 
 	@Override
-	public ComandaDTO fecharComanda(Long comandaId) throws Exception {
+	public void fecharComanda(Long comandaId) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override

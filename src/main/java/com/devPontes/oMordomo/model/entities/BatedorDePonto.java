@@ -33,26 +33,26 @@ public class BatedorDePonto implements Serializable {
 
 	@Column(name = "data")
 	private LocalDate dataMes;
-
-	@OneToMany(mappedBy = "batedorPonto", fetch = FetchType.EAGER)
-	private List<Garcom> garcoms = new ArrayList<>();
+	
+	@Column(name = "data_falta")
+	private LocalDate dataFalta;
 
 	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.LAZY)
 	private List<Ponto> pontos = new ArrayList<>();
-	
+
 	@Column(name = "houve_falta_mes")
 	private Boolean teveFalta;
-	
-	
-	
 
+
+	
+	
 	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataMes,
-			List<Garcom> garcoms, List<Ponto> pontos, Boolean teveFalta) {
+			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta) {
 		this.id = id;
 		this.horarioEntrada = horarioEntrada;
 		this.horarioSaida = horarioSaida;
 		this.dataMes = dataMes;
-		this.garcoms = garcoms;
+		this.dataFalta = dataFalta;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
 	}
@@ -85,20 +85,20 @@ public class BatedorDePonto implements Serializable {
 		this.horarioSaida = horarioSaida;
 	}
 
-	public List<Garcom> getGarcoms() {
-		return garcoms;
+	public LocalDate getDataFalta() {
+		return dataFalta;
 	}
 
-	public void setGarcoms(List<Garcom> garcoms) {
-		this.garcoms = garcoms;
+	public void setDataFalta(LocalDate dataFalta) {
+		this.dataFalta = dataFalta;
 	}
 
-	public LocalDate getDataMes() {
-		return dataMes;
+	public Boolean getTeveFalta() {
+		return teveFalta;
 	}
 
-	public void setDataMes(LocalDate dataMes) {
-		this.dataMes = dataMes;
+	public void setTeveFalta(Boolean teveFalta) {
+		this.teveFalta = teveFalta;
 	}
 
 	public List<Ponto> getPontos() {
@@ -108,13 +108,24 @@ public class BatedorDePonto implements Serializable {
 	public void setPontos(List<Ponto> pontos) {
 		this.pontos = pontos;
 	}
+	
+	
 
-	public Long totalDeHorasTrabalhadasMes() {
-		long totalHoras = 0;
-		var pontos = garcoms.stream().flatMap(g -> g.getBatedorPonto().getPontos().stream());
-		var total = pontos.mapToLong(p -> Duration.between(p.getHorarioEntrada(), p.getHorarioSaida()).toHours()).sum();
-		totalHoras = total;
-		return totalHoras;
+	public LocalDate getDataMes() {
+		return dataMes;
+	}
+
+	public void setDataMes(LocalDate dataMes) {
+		this.dataMes = dataMes;
+	}
+
+	public Long calcularTotalDeHorasTrabalhadasMes(Garcom garcom) {
+		var calculo = pontos.stream().filter(p -> p.getHorarioEntrada()
+				.getMonth().equals(this.dataMes.getMonth()))
+				.mapToLong(p -> Duration.between(p.getHorarioEntrada(), p.getHorarioSaida())
+						.toHours()).sum();
+		garcom.setHorasTrabalhadasMes(calculo);
+		return calculo;
 	}
 
 }
