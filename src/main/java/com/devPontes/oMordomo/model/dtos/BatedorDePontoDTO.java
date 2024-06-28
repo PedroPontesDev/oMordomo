@@ -23,10 +23,10 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	
 	private String nome;
 	
-	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ss", shape = Shape.STRING)
+	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ss'T'Z'", shape = Shape.STRING, timezone = "GMT")
 	private LocalDateTime horarioEntrada;
 	
-	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ss", shape = Shape.STRING)
+	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ssT'Z'", shape = Shape.STRING)
 	private LocalDateTime horarioSaida;
 	
 	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
