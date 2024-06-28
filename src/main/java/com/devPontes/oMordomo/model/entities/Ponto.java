@@ -31,7 +31,7 @@ public class Ponto {
 	private LocalDateTime horarioSaida;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = BatedorDePonto.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "batedor_ponto.id")
 	private BatedorDePonto batedorDePonto;
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
-@JsonPropertyOrder("id, horarioEntrada, horarioSaida, pontos, dataDoMes, dataDaFalta, teveFalta")
+@JsonPropertyOrder("id, pontos, dataDoMes, dataDaFalta, teveFalta")
 public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 		
 	
@@ -23,13 +23,8 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	
 	private String nome;
 	
-	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ss'T'Z'", shape = Shape.STRING, timezone = "GMT")
-	private LocalDateTime horarioEntrada;
-	
-	@JsonFormat(pattern = "dd/mm/yyyy'T'HH:mm:ssT'Z'", shape = Shape.STRING)
-	private LocalDateTime horarioSaida;
-	
 	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
+	@JsonProperty(value = "mesDaFalta")
 	private LocalDate dataDoMes;
 	
 	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
@@ -40,11 +35,10 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	@JsonProperty(value = "houveFalta")
 	private Boolean teveFalta;
 
-	public BatedorDePontoDTO(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataDoMes,
+	public BatedorDePontoDTO(Long id,  LocalDate dataDoMes,
 			LocalDate dataDaFalta, List<PontoDTO> pontos, Boolean teveFalta) {
 		this.id = id;
-		this.horarioEntrada = horarioEntrada;
-		this.horarioSaida = horarioSaida;
+
 		this.dataDoMes = dataDoMes;
 		this.dataDaFalta = dataDaFalta;
 		this.pontos = pontos;
@@ -61,22 +55,6 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getHorarioEntrada() {
-		return horarioEntrada;
-	}
-
-	public void setHorarioEntrada(LocalDateTime horarioEntrada) {
-		this.horarioEntrada = horarioEntrada;
-	}
-
-	public LocalDateTime getHorarioSaida() {
-		return horarioSaida;
-	}
-
-	public void setHorarioSaida(LocalDateTime horarioSaida) {
-		this.horarioSaida = horarioSaida;
 	}
 
 	public LocalDate getDataDoMes() {
@@ -133,10 +111,12 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 
 	@Override
 	public String toString() {
-		return "BatedorDePontoDTO [id=" + id + ", horarioEntrada=" + horarioEntrada + ", horarioSaida=" + horarioSaida
-				+ ", dataDoMes=" + dataDoMes + ", dataDaFalta=" + dataDaFalta + ", pontos=" + pontos + ", teveFalta="
-				+ teveFalta + "]";
+		return "BatedorDePontoDTO [id=" + id + ", nome=" + nome + ", dataDoMes=" + dataDoMes + ", dataDaFalta="
+				+ dataDaFalta + ", pontos=" + pontos + ", teveFalta=" + teveFalta + "]";
 	}
+
+	
+	
 	
 	
 	

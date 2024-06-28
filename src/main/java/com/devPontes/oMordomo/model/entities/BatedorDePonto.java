@@ -32,29 +32,21 @@ public class BatedorDePonto implements Serializable {
 	@Column(name = "nome")
 	private String nomeBatedor;
 
-	@Column(name = "horario_entrada")
-	private LocalDateTime horarioEntrada;
-
-	@Column(name = "horario_saida")
-	private LocalDateTime horarioSaida;
-
 	@Column(name = "data")
 	private LocalDate dataDoMes;
 
 	@Column(name = "dia_falta")
 	private LocalDate dataDaFalta;
 
-	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Ponto> pontos = new ArrayList<>();
 
 	@Column(name = "houve_falta_mes")
 	private Boolean teveFalta;
 
-	public BatedorDePonto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataDoMes,
+	public BatedorDePonto(Long id,  LocalDate dataDoMes,
 			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta, String nomeBatedor) {
 		this.id = id;
-		this.horarioEntrada = horarioEntrada;
-		this.horarioSaida = horarioSaida;
 		this.dataDoMes = dataDoMes;
 		this.dataDaFalta = dataFalta;
 		this.pontos = pontos;
@@ -72,22 +64,6 @@ public class BatedorDePonto implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getHorarioEntrada() {
-		return horarioEntrada;
-	}
-
-	public void setHorarioEntrada(LocalDateTime horarioEntrada) {
-		this.horarioEntrada = horarioEntrada;
-	}
-
-	public LocalDateTime getHorarioSaida() {
-		return horarioSaida;
-	}
-
-	public void setHorarioSaida(LocalDateTime horarioSaida) {
-		this.horarioSaida = horarioSaida;
 	}
 
 	public LocalDate getDataDaFalta() {
@@ -169,9 +145,11 @@ public class BatedorDePonto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BatedorDePonto [id=" + id + ", horarioEntrada=" + horarioEntrada + ", horarioSaida=" + horarioSaida
-				+ ", dataDoMes=" + dataDoMes + ", dataDaFalta=" + dataDaFalta + ", pontos=" + pontos + ", teveFalta="
-				+ teveFalta + "]";
+		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor + ", dataDoMes=" + dataDoMes
+				+ ", dataDaFalta=" + dataDaFalta + ", pontos=" + pontos + ", teveFalta=" + teveFalta + "]";
 	}
+
+	
+	
 
 }

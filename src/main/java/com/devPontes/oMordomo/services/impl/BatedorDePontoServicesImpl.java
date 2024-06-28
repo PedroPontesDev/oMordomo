@@ -1,6 +1,10 @@
 package com.devPontes.oMordomo.services.impl;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,8 +80,6 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 			pontoNovo.setGarcom(funcionario.get());
 			BatedorDePonto registro = batedor.get();
 			registro.getPontos().add(pontoNovo);
-			registro.setHorarioEntrada(pontoNovo.getHorarioEntrada());
-			registro.setHorarioSaida(pontoNovo.getHorarioSaida());
 			registro.setTeveFalta(false);
 			registro.setDataDoMes(LocalDate.now());
 			registro.setDataDaFalta(null);
@@ -107,12 +109,15 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 	@Override
-	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
+	public Integer calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
 		Long totalHoras = 0L;
 		var entidade = usuarioRepository.findById(funcionarioId);
 		if(entidade.isPresent()) {
 			Garcom garcom = MyMapper.parseObject(entidade, Garcom.class);
-			var soma = totalHoras += garcom.getHorasTrabalhadasMes();
+			var horas =  garcom.getPontoGarcom().getHorarioEntrada().getHour();
+			var mes = garcom.getPontoGarcom().getHorarioEntrada().getMonthValue();
+			Integer soma = (horas / mes) * mes;
+			garcom.setHorasTrabalhadasMes(totalHoras);
 			return soma;
 		} throw new Exception("Não é possivel calcular total de horas, verifique os dados e tente novamente!");
 	}
