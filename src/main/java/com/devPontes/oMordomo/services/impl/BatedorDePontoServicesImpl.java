@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devPontes.oMordomo.model.dtos.BatedorDePontoDTO;
+import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.model.entities.BatedorDePonto;
+import com.devPontes.oMordomo.model.entities.Garcom;
 import com.devPontes.oMordomo.model.entities.Ponto;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.BatedorPontoRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
 import com.devPontes.oMordomo.repositories.PontoRepository;
+import com.devPontes.oMordomo.repositories.UsuarioRepository;
 import com.devPontes.oMordomo.services.BatedorDePontoServices;
 
 import jakarta.transaction.Transactional;
@@ -31,6 +34,9 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 
 	@Autowired
 	BatedorPontoRepository batedorRepository;
+	
+	@Autowired
+	UsuarioRepository usuarioRepository;
 
 	@Override
 	public List<BatedorDePontoDTO> exibirBatedorDePonto() throws Exception {
@@ -82,6 +88,7 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 			funcionario.get().setPontoGarcom(pontoNovo);
 			garcomRepository.save(funcionario.get());
 			var dto = MyMapper.parseObject(registro, BatedorDePontoDTO.class);
+			return dto;
 		}
 		throw new Exception("Não foi possivel registrar do funcionario!");
 
@@ -101,8 +108,13 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 
 	@Override
 	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Long totalHoras = 0L;
+		var entidade = usuarioRepository.findById(funcionarioId);
+		if(entidade.isPresent()) {
+			Garcom garcom = MyMapper.parseObject(entidade, Garcom.class);
+			var soma = totalHoras += garcom.getHorasTrabalhadasMes();
+			return soma;
+		} throw new Exception("Não é possivel calcular total de horas, verifique os dados e tente novamente!");
 	}
 
 	@Override
@@ -112,9 +124,15 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 	@Override
-	public PontoDTO exibirPontoFuncionario(Long funcionarioId) {
-		// TODO Auto-generated method stub
-		return null;
+	public PontoDTO exibirPontoFuncionario(Long funcionarioId) throws Exception {
+		var entidade = usuarioRepository.findById(funcionarioId);
+		if(entidade != null) {
+			Garcom funcionario = MyMapper.parseObject(entidade, Garcom.class);
+			Ponto ponto = funcionario.getPontoGarcom();
+			PontoDTO dtoPonto = MyMapper.parseObject(ponto, PontoDTO.class);
+			return dtoPonto;
+		} throw new Exception("");
+		
 	}
 
 }

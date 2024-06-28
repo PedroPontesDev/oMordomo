@@ -12,8 +12,10 @@ import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.model.entities.Comanda;
 import com.devPontes.oMordomo.model.entities.Garcom;
+import com.devPontes.oMordomo.model.entities.Ponto;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
+import com.devPontes.oMordomo.repositories.PontoRepository;
 import com.devPontes.oMordomo.services.GarcomServices;
 
 import jakarta.transaction.Transactional;
@@ -23,6 +25,9 @@ public class GarcomServicesImpl implements GarcomServices {
 	
 	@Autowired
 	GarcomRepository garcomRepository;
+	
+	@Autowired
+	PontoRepository pontoRepository;
 	
 	//A implementar o repositorio de Comandas
 
@@ -55,12 +60,34 @@ public class GarcomServicesImpl implements GarcomServices {
 	@Transactional
 	@Override
 	public GarcomDTO registrarNovoGarcom(GarcomDTO novoGarcom) throws Exception {
-		Garcom entidade = MyMapper.parseObject(novoGarcom, Garcom.class);
-		if(entidade == null) throw new Exception("Garcom não pôde ser registrado, tente novamente!");
-		entidade = garcomRepository.saveAndFlush(entidade);
-		var dto = MyMapper.parseObject(entidade, GarcomDTO.class);
-		return dto;
+	    // Mapeando o DTO para a entidade Garcom
+	    Garcom entidade = MyMapper.parseObject(novoGarcom, Garcom.class);
+	    if (entidade == null) throw new Exception("Garcom não pôde ser registrado, tente novamente!");
+
+	    // Criando e salvando a entidade Ponto antes de associá-la ao Garcom
+	    Ponto ponto = new Ponto();
+	    ponto = pontoRepository.save(ponto);  // Supondo que você tem um pontoRepository para salvar a entidade Ponto
+
+	    // Associando o Ponto salvo ao Garcom
+	    entidade.setPontoGarcom(ponto);
+	    
+	    // Setando os outros atributos
+	    entidade.setFullName(novoGarcom.getFullName());
+	    entidade.setUsername(novoGarcom.getUsername());
+	    entidade.setPassword(novoGarcom.getPassword());
+	    entidade.setCpf(novoGarcom.getCpf());
+	    entidade.setEmail(novoGarcom.getEmail());
+	    entidade.setHorasTrabalhadasMes(novoGarcom.getHorasTrabalhadasMes());
+	    entidade.setHouveFalta(novoGarcom.getTeveFalta());
+	    
+	    // Salvando a entidade Garcom
+	    entidade = garcomRepository.save(entidade);
+
+	    // Mapeando a entidade salva para DTO
+	    var dto = MyMapper.parseObject(entidade, GarcomDTO.class);
+	    return dto;
 	}
+
 
 	@Transactional
 	@Override

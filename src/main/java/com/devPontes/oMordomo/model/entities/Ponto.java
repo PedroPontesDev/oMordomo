@@ -3,14 +3,16 @@ package com.devPontes.oMordomo.model.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -28,10 +30,13 @@ public class Ponto {
 	@Column(name = "horario_saida")
 	private LocalDateTime horarioSaida;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "batedor_ponto.id")
 	private BatedorDePonto batedorDePonto;
 
-	@OneToOne(mappedBy = "pontoGarcom")
+	@OneToOne
+	@JoinColumn(name = "garcom.id")
 	private Garcom garcom;
 	
 	public Ponto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, BatedorDePonto batedorDePonto,

@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,8 +44,7 @@ public class BatedorDePonto implements Serializable {
 	@Column(name = "dia_falta")
 	private LocalDate dataDaFalta;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Ponto> pontos = new ArrayList<>();
 
 	@Column(name = "houve_falta_mes")

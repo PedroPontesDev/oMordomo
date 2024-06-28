@@ -3,6 +3,7 @@ package com.devPontes.oMordomo.model.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -23,15 +24,21 @@ public class Garcom extends Usuario implements Serializable {
 	@Column(name = "total_horas_trabalhadas")
 	private Long horasTrabalhadasMes;
 
-	@OneToOne
+	@OneToOne(mappedBy = "garcom", cascade = CascadeType.ALL)
 	private Ponto pontoGarcom;
+	
+	@Column(name = "houve_falta")
+	private Boolean houveFalta;
+	
+	//A implementar relação com Comandas
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, Ponto ponto) {
+			Long horasTrabalhadasMes, Ponto ponto, Boolean houveFalta) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.pontoGarcom = ponto;
+		this.houveFalta = houveFalta;
 	}
 
 	public Garcom() {
@@ -60,6 +67,16 @@ public class Garcom extends Usuario implements Serializable {
 
 	public void setPontoGarcom(Ponto pontoGarcom) {
 		this.pontoGarcom = pontoGarcom;
+	}
+	
+	
+
+	public Boolean getHouveFalta() {
+		return houveFalta;
+	}
+
+	public void setHouveFalta(Boolean houveFalta) {
+		this.houveFalta = houveFalta;
 	}
 
 	@Override

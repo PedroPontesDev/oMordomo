@@ -35,7 +35,6 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
 	private LocalDate dataDaFalta;
 	
-	@JsonIgnore
 	private List<PontoDTO> pontos = new ArrayList<>();
 	
 	@JsonProperty(value = "houveFalta")

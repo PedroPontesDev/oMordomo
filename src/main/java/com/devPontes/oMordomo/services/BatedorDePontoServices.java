@@ -15,5 +15,5 @@ public interface BatedorDePontoServices {
     BatedorDePontoDTO registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId) throws Exception;
     Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception;
     Double calcularBonusSalario(Long funcionarioId, Double reajuste) throws Exception;
-    PontoDTO exibirPontoFuncionario(Long funcionarioId);
+    PontoDTO exibirPontoFuncionario(Long funcionarioId) throws Exception;
 }

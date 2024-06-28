@@ -1,16 +1,16 @@
 package com.devPontes.oMordomo.model.dtos;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;  
+	private Long id;
 	private String fullName;
 	private String email;
 	private String username;
@@ -21,10 +21,13 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Long horasTrabalhadasMes;
 
+	@JsonProperty("houveFalta")
 	private Boolean teveFalta;
 
+	private PontoDTO pontoGarcom;
+
 	public GarcomDTO(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, Boolean teveFalta) {
+			Long horasTrabalhadasMes, Boolean teveFalta, PontoDTO ponto) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -34,10 +37,11 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.teveFalta = teveFalta;
+		this.pontoGarcom = ponto;
 	}
-	
+
 	public GarcomDTO() {
-		
+
 	}
 
 	public Long getId() {
@@ -112,6 +116,13 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.teveFalta = teveFalta;
 	}
 
+	public PontoDTO getPontoGarcom() {
+		return pontoGarcom;
+	}
+
+	public void setPontoGarcom(PontoDTO pontoGarcom) {
+		this.pontoGarcom = pontoGarcom;
+	}
 
 	@Override
 	public int hashCode() {
@@ -139,11 +150,5 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 				+ ", password=" + password + ", cpf=" + cpf + ", salario=" + salario + ", horasTrabalhadasMes="
 				+ horasTrabalhadasMes + ", teveFalta=" + teveFalta + "]";
 	}
-
-
-	
-	
-	
-	
 
 }
