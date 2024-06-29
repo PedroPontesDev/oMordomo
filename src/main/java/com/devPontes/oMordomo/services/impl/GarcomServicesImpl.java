@@ -78,7 +78,7 @@ public class GarcomServicesImpl implements GarcomServices {
 	    entidade.setCpf(novoGarcom.getCpf());
 	    entidade.setEmail(novoGarcom.getEmail());
 	    entidade.setHorasTrabalhadasMes(novoGarcom.getHorasTrabalhadasMes());
-	    entidade.setHouveFalta(novoGarcom.getTeveFalta());
+	    entidade.setTeveFalta(novoGarcom.getTeveFalta());
 	    
 	    // Salvando a entidade Garcom
 	    entidade = garcomRepository.save(entidade);

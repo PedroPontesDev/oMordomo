@@ -1,10 +1,6 @@
 package com.devPontes.oMordomo.services.impl;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devPontes.oMordomo.model.dtos.BatedorDePontoDTO;
-import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.model.entities.BatedorDePonto;
 import com.devPontes.oMordomo.model.entities.Garcom;
@@ -44,20 +39,23 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 
 	@Override
 	public List<BatedorDePontoDTO> exibirBatedorDePonto() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		var todosBatedor = batedorRepository.findAll();
+		return MyMapper.parseListObjects(todosBatedor, BatedorDePontoDTO.class);
 	}
 
 	@Override
 	public BatedorDePontoDTO criarNovoBatedorPonto(BatedorDePontoDTO novoBatedor) throws Exception {
-		if (novoBatedor == null)
-			throw new Exception("Os dados estão inconsistentes, tente novamente!");
-		BatedorDePonto newBatedor = MyMapper.parseObject(novoBatedor, BatedorDePonto.class);
-		if (newBatedor == null)
-			throw new Exception("Os dados estão inconsistentes, tente novamente!");
-		batedorRepository.save(newBatedor);
-		var dto = MyMapper.parseObject(newBatedor, BatedorDePontoDTO.class);
-		return dto;
+        if (novoBatedor == null) {
+            throw new Exception("Os dados estão inconsistentes, tente novamente!");
+        }
+
+        BatedorDePonto newBatedor = MyMapper.parseObject(novoBatedor, BatedorDePonto.class);
+        if (newBatedor == null) {
+            throw new Exception("Os dados estão inconsistentes, tente novamente!");
+        }
+
+        batedorRepository.save(newBatedor);
+        return MyMapper.parseObject(newBatedor, BatedorDePontoDTO.class);
 	}
 
 	@Override
@@ -78,13 +76,14 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		var batedor = batedorRepository.findById(batedorId);
 		if (batedor.isPresent() && funcionario.isPresent()) {
 			pontoNovo.setGarcom(funcionario.get());
+
+			LocalDate dataMesFalta = batedor.get().getDataDoMes();
 			BatedorDePonto registro = batedor.get();
+			
 			registro.getPontos().add(pontoNovo);
-			registro.setTeveFalta(false);
-			registro.setDataDoMes(LocalDate.now());
-			registro.setDataDaFalta(null);
+			registro.setHouveFalta(null);
+			registro.setDataDoMes(dataMesFalta);
 			registro.setPontos(new ArrayList<>());
-			registro.setNomeBatedor(batedor.get().getNomeBatedor());
 			pontoRepository.save(pontoNovo);
 			batedorRepository.save(registro);
 			funcionario.get().setPontoGarcom(pontoNovo);
@@ -118,6 +117,7 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 			var mes = garcom.getPontoGarcom().getHorarioEntrada().getMonthValue();
 			Integer soma = (horas / mes) * mes;
 			garcom.setHorasTrabalhadasMes(totalHoras);
+			garcomRepository.save(garcom);
 			return soma;
 		} throw new Exception("Não é possivel calcular total de horas, verifique os dados e tente novamente!");
 	}

@@ -39,6 +39,7 @@ public abstract class Usuario implements Serializable {
 	@Column(name = "cpf")
 	private Long cpf;
 
+
 	public Usuario(String fullName, String email, String username, String password, Long cpf) {
 		this.fullName = fullName;
 		this.email = email;

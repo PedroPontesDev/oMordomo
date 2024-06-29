@@ -29,33 +29,38 @@ public class BatedorDePonto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "nome")
+	@Column(name = "nome_batedor_ponto")
 	private String nomeBatedor;
 
-	@Column(name = "data")
+	@Column(name = "data_falta_mes")
 	private LocalDate dataDoMes;
 
-	@Column(name = "dia_falta")
-	private LocalDate dataDaFalta;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Ponto> pontos = new ArrayList<>();
 
 	@Column(name = "houve_falta_mes")
-	private Boolean teveFalta;
+	private Boolean houveFalta;
 
-	public BatedorDePonto(Long id,  LocalDate dataDoMes,
-			LocalDate dataFalta, List<Ponto> pontos, Boolean teveFalta, String nomeBatedor) {
+	public BatedorDePonto(Long id, LocalDate dataDoMes, LocalDate dataFalta, List<Ponto> pontos, Boolean houveFalta,
+			String nomeBatedor) {
 		this.id = id;
 		this.dataDoMes = dataDoMes;
-		this.dataDaFalta = dataFalta;
 		this.pontos = pontos;
-		this.teveFalta = teveFalta;
+		this.houveFalta = houveFalta;
 		this.nomeBatedor = nomeBatedor;
+
 	}
 
 	public BatedorDePonto() {
 
+	}
+
+	public String getNomeBatedor() {
+		return nomeBatedor;
+	}
+
+	public void setNomeBatedor(String nomeBatedor) {
+		this.nomeBatedor = nomeBatedor;
 	}
 
 	public Long getId() {
@@ -66,20 +71,12 @@ public class BatedorDePonto implements Serializable {
 		this.id = id;
 	}
 
-	public LocalDate getDataDaFalta() {
-		return dataDaFalta;
+	public Boolean getHouveFalta() {
+		return houveFalta;
 	}
 
-	public void setDataFalta(LocalDate dataFalta) {
-		this.dataDaFalta = dataFalta;
-	}
-
-	public Boolean getTeveFalta() {
-		return teveFalta;
-	}
-
-	public void setTeveFalta(Boolean teveFalta) {
-		this.teveFalta = teveFalta;
+	public void setHouveFalta(Boolean houveFalta) {
+		this.houveFalta = houveFalta;
 	}
 
 	public List<Ponto> getPontos() {
@@ -98,24 +95,12 @@ public class BatedorDePonto implements Serializable {
 		this.dataDoMes = dataDoMes;
 	}
 
-	public String getNomeBatedor() {
-		return nomeBatedor;
-	}
-
-	public void setNomeBatedor(String nomeBatedor) {
-		this.nomeBatedor = nomeBatedor;
-	}
-
 	public LocalDate getDataDoMes() {
 		return dataDoMes;
 	}
 
 	public void setDataDoMes(LocalDate dataDoMes) {
 		this.dataDoMes = dataDoMes;
-	}
-
-	public void setDataDaFalta(LocalDate dataDaFalta) {
-		this.dataDaFalta = dataDaFalta;
 	}
 
 	public Long calcularTotalDeHorasTrabalhadasMes(Garcom garcom) {
@@ -145,11 +130,9 @@ public class BatedorDePonto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor + ", dataDoMes=" + dataDoMes
-				+ ", dataDaFalta=" + dataDaFalta + ", pontos=" + pontos + ", teveFalta=" + teveFalta + "]";
+		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor + ", dataDoMes=" + dataDoMes + ", pontos="
+				+ pontos + ", houveFalta=" + houveFalta + "]";
 	}
 
 	
-	
-
 }

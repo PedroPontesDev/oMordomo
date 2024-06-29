@@ -21,8 +21,7 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Long horasTrabalhadasMes;
 
-	@JsonProperty("houveFalta")
-	private Boolean teveFalta;
+	private Boolean teveFalta; //Atribbuto nao retornando no JSON mas sento persistido no banco ??? A  Resolver
 
 	private PontoDTO pontoGarcom;
 
@@ -42,8 +41,8 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	public GarcomDTO() {
 
-	}
-
+	} 
+	
 	public Long getId() {
 		return id;
 	}

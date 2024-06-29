@@ -36,10 +36,11 @@ public class BatedorPontoController {
 		
 	}
 	
-	@PostMapping()
+	@PostMapping(path = "/registrar-ponto/{funcionarioId}/{batedorId}")
 	public ResponseEntity<BatedorDePontoDTO> registrarPontoFuncionario(@RequestBody PontoDTO ponto,
-			@PathVariable Long funcionarioId, @PathVariable Long batedorId) {
-		return null;
+			@PathVariable Long funcionarioId, @PathVariable Long batedorId) throws Exception {
+		BatedorDePontoDTO baterPonto = batedorService.registrarPontoFuncionario(ponto, funcionarioId, batedorId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(baterPonto);
 	}
 	
 	

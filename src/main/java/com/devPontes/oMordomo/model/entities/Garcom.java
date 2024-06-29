@@ -27,18 +27,18 @@ public class Garcom extends Usuario implements Serializable {
 	@OneToOne(mappedBy = "garcom", cascade = CascadeType.ALL)
 	private Ponto pontoGarcom;
 	
-	@Column(name = "houve_falta")
-	private Boolean houveFalta;
+	@Column(name = "teve_falta")
+	private Boolean teveFalta;
 	
 	//A implementar relação com Comandas
 
 	public Garcom(String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, Ponto ponto, Boolean houveFalta) {
+			Long horasTrabalhadasMes, Ponto ponto, Boolean teveFalta) {
 		super(fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.pontoGarcom = ponto;
-		this.houveFalta = houveFalta;
+		this.teveFalta = teveFalta;
 	}
 
 	public Garcom() {
@@ -71,17 +71,17 @@ public class Garcom extends Usuario implements Serializable {
 	
 	
 
-	public Boolean getHouveFalta() {
-		return houveFalta;
+	public Boolean getTeveFalta() {
+		return teveFalta;
 	}
 
-	public void setHouveFalta(Boolean houveFalta) {
-		this.houveFalta = houveFalta;
+	public void setTeveFalta(Boolean teveFalta) {
+		this.teveFalta = teveFalta;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(horasTrabalhadasMes, pontoGarcom, salario);
+		return Objects.hash(horasTrabalhadasMes, pontoGarcom, salario, teveFalta);
 	}
 
 	@Override
@@ -94,13 +94,10 @@ public class Garcom extends Usuario implements Serializable {
 			return false;
 		Garcom other = (Garcom) obj;
 		return Objects.equals(horasTrabalhadasMes, other.horasTrabalhadasMes)
-				&& Objects.equals(pontoGarcom, other.pontoGarcom) && Objects.equals(salario, other.salario);
+				&& Objects.equals(pontoGarcom, other.pontoGarcom) && Objects.equals(salario, other.salario)
+				&& Objects.equals(teveFalta, other.teveFalta);
 	}
 
-	@Override
-	public String toString() {
-		return "Garcom [salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes + ", pontoGarcom="
-				+ pontoGarcom + "]";
-	}
-
+	
+	
 }
