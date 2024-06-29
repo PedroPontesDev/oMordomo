@@ -57,7 +57,7 @@ public class GarcomController {
 		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
 	}
 	
-	@PatchMapping
+	@PatchMapping(path = "/atualizar-salario/{garcomId}")
 	public ResponseEntity<GarcomDTO> alterSalarioGarcom(Long garcomId, Double novoSalario) {
 		return null;
 	}

@@ -18,6 +18,7 @@ import com.devPontes.oMordomo.repositories.GarcomRepository;
 import com.devPontes.oMordomo.repositories.PontoRepository;
 import com.devPontes.oMordomo.repositories.UsuarioRepository;
 import com.devPontes.oMordomo.services.BatedorDePontoServices;
+import com.devPontes.oMordomo.services.exceptions.ResourceNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -96,9 +97,23 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 	@Override
-	public BatedorDePontoDTO atualizarPontoFuncionario(Long pontoId, Long funcionarioId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public BatedorDePontoDTO atualizarPontoFuncionario(PontoDTO ponto, Long funcionarioId, Long batedorId) throws Exception {
+		var funcionarioData = usuarioRepository.findById(funcionarioId);
+		var batedorPonto = batedorRepository.findById(batedorId);
+		Ponto pontoGarcom = null;
+		if(ponto != null && funcionarioData.isPresent() && batedorPonto.isPresent()) {
+			Garcom garcom = MyMapper.parseObject(funcionarioData, Garcom.class);
+			pontoGarcom = MyMapper.parseObject(ponto, Ponto.class);
+			garcom.setPontoGarcom(pontoGarcom);
+			garcomRepository.save(garcom);
+			pontoGarcom.setGarcom(garcom);
+			pontoRepository.save(pontoGarcom);
+			BatedorDePonto batedor = batedorPonto.get();
+			var associarPonto = batedor.getPontos().add(pontoGarcom);
+			batedorRepository.save(batedor);
+			var dto = MyMapper.parseObject(batedor, BatedorDePontoDTO.class);
+			return dto;
+		} throw new  ResourceNotFoundException(pontoGarcom.getId());
 	}
 
 	@Override

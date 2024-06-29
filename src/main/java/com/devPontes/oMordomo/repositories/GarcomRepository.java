@@ -16,4 +16,7 @@ public interface GarcomRepository extends JpaRepository<Garcom, Long> {
 	@Query("SELECT u FROM Usuario u WHERE u.cpf = :cpf")
 	Optional<Garcom> procurarPorCpf(@Param("cpf") Long cpf);
 	
+	@Query("SET u FROM Garcom g UPDATE g.salario WHERE g.salario =: novoSalario")
+	void setReajusteSalario(@Param("novoSalario") Double novoSalario);
+	
 }

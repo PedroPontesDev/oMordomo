@@ -1,8 +1,8 @@
-package com.devPontes.oMordomo.exceptions;
+package com.devPontes.oMordomo.services.exceptions;
 
 import java.io.Serializable;
 
-public class ResourceNotFoundException extends RuntimeException implements Serializable {
+public class SumHoursWorkingException extends RuntimeException implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
