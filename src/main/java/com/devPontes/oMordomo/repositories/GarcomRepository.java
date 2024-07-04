@@ -3,6 +3,7 @@ package com.devPontes.oMordomo.repositories;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,7 +17,8 @@ public interface GarcomRepository extends JpaRepository<Garcom, Long> {
 	@Query("SELECT u FROM Usuario u WHERE u.cpf = :cpf")
 	Optional<Garcom> procurarPorCpf(@Param("cpf") Long cpf);
 	
-	@Query("SET u FROM Garcom g UPDATE g.salario WHERE g.salario =: novoSalario")
-	void setReajusteSalario(@Param("novoSalario") Double novoSalario);
+	@Modifying
+	@Query("UPDATE Garcom g SET g.salario = :novoSalario WHERE g.id = :id")
+	void setReajusteSalario(@Param("novoSalario") Double novoSalario, @Param("id") Long id);
 	
 }

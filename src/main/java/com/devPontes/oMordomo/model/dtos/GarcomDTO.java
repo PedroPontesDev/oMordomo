@@ -5,7 +5,8 @@ import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.devPontes.oMordomo.model.entities.Garcom;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,12 +22,13 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 
 	private Long horasTrabalhadasMes;
 
-	private Boolean teveFalta; //Atribbuto nao retornando no JSON mas sento persistido no banco ??? A  Resolver
+	private Boolean teveFalta; //Atribbuto nao retornando no JSON mas sendo persistido no banco ??? A  Resolver
 
+	@JsonIgnore
 	private PontoDTO pontoGarcom;
-
+	
 	public GarcomDTO(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, Boolean teveFalta, PontoDTO ponto) {
+			Long horasTrabalhadasMes, Boolean teveFalta, PontoDTO pontoGarcom) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
@@ -36,7 +38,7 @@ public class GarcomDTO extends RepresentationModel<GarcomDTO> implements Seriali
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.teveFalta = teveFalta;
-		this.pontoGarcom = ponto;
+		this.pontoGarcom = pontoGarcom;
 	}
 
 	public GarcomDTO() {

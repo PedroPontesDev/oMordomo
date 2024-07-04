@@ -57,6 +57,12 @@ public class GarcomController {
 		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
 	}
 	
+	@PatchMapping(path = "/atualizar-cpf/{id}/{novoCpf}")
+	public ResponseEntity<GarcomDTO> atualizarCpfGarcom(@PathVariable Long id, @PathVariable Long novoCpf) throws Exception {
+		var garcomUpdated = garcomServices.alterarCpfGarcom(id, novoCpf);
+		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
+	}
+	
 	@PatchMapping(path = "/atualizar-salario/{garcomId}")
 	public ResponseEntity<GarcomDTO> alterSalarioGarcom(Long garcomId, Double novoSalario) {
 		return null;

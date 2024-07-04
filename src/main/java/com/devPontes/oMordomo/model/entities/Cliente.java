@@ -5,6 +5,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -15,21 +16,32 @@ import jakarta.persistence.Table;
 public class Cliente extends Usuario {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	private Long id;
+	
 	@Column(name = "valor_pago")
 	private Double valorDePagamento;
 
 	@Column(name = "houve_pagamento")
 	private Boolean pagou;
 
-	public Cliente(String fullName, String email, String username, String password, Long cpf, Double valorDePagamento,
+	public Cliente(Long id, String fullName, String email, String username, String password, Long cpf, Double valorDePagamento,
 			Boolean pagou) {
-		super(fullName, email, username, password, cpf);
+		super(id, fullName, email, username, password, cpf);
 		this.valorDePagamento = valorDePagamento;
 		this.pagou = pagou;
 	}
 
 	public Cliente() {
 
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Boolean getPagou() {

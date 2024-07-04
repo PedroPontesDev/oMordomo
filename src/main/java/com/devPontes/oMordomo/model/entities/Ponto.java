@@ -35,8 +35,8 @@ public class Ponto {
 	@JoinColumn(name = "batedor_ponto.id")
 	private BatedorDePonto batedorDePonto;
 
-	@OneToOne
-	@JoinColumn(name = "garcom.id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "garcom_id")
 	private Garcom garcom;
 	
 	public Ponto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, BatedorDePonto batedorDePonto,

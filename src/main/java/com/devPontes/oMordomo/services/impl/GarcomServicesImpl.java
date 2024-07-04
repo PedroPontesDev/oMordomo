@@ -1,7 +1,10 @@
 package com.devPontes.oMordomo.services.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.AccountNotFoundException;
 
@@ -50,12 +53,9 @@ public class GarcomServicesImpl implements GarcomServices {
 
 	@Override
 	public GarcomDTO procurarPorCpf(Long cpf) throws Exception {
-		Optional<Garcom> entidade = garcomRepository.procurarPorCpf(cpf);
-		if(entidade.isPresent()) {
-			GarcomDTO dto = MyMapper.parseObject(entidade.get(), GarcomDTO.class);
-			return dto;
-		} throw new Exception("");
+			return buscarBinariaCpf(cpf);
 	}
+		
 
 	@Transactional
 	@Override
@@ -63,14 +63,17 @@ public class GarcomServicesImpl implements GarcomServices {
 	    // Mapeando o DTO para a entidade Garcom
 	    Garcom entidade = MyMapper.parseObject(novoGarcom, Garcom.class);
 	    if (entidade == null) throw new Exception("Garcom não pôde ser registrado, tente novamente!");
-
+	 
 	    // Criando e salvando a entidade Ponto antes de associá-la ao Garcom
-	    Ponto ponto = new Ponto();
-	    ponto = pontoRepository.save(ponto);  // Supondo que você tem um pontoRepository para salvar a entidade Ponto
-
-	    // Associando o Ponto salvo ao Garcom
-	    entidade.setPontoGarcom(ponto);
-	    
+	    List<Ponto> pontos = new ArrayList<>();
+	    for(Ponto ponto : pontos) {
+	    	  ponto.setBatedorDePonto(null);
+	    	  ponto.setGarcom(entidade);
+	    	  ponto.setHorarioEntrada(null);
+	    	  ponto.setHorarioSaida(null);
+	    	  pontoRepository.save(ponto); 
+	    	  entidade.getPontos().add(ponto);
+	    }
 	    // Setando os outros atributos
 	    entidade.setFullName(novoGarcom.getFullName());
 	    entidade.setUsername(novoGarcom.getUsername());
@@ -117,11 +120,25 @@ public class GarcomServicesImpl implements GarcomServices {
 		if(garcom.isPresent()) {
 			var entity = garcom.get();
 			entity.setSalario(novoSalario);
-			garcomRepository.setReajusteSalario(novoSalario);
+			garcomRepository.setReajusteSalario(novoSalario, garcomId);
 			var dto = MyMapper.parseObject(entity, GarcomDTO.class);
 			
 			return dto;
 		} throw new Exception("Usuário não encontrado");
+	}
+	
+	@Transactional
+	public GarcomDTO alterarCpfGarcom(Long garcomId, Long novoCpf) throws Exception {
+	    var garcom = garcomRepository.findById(garcomId);
+	    if(garcom.isPresent()) {
+	        var entity = garcom.get();
+	        entity.setCpf(novoCpf);
+	        garcomRepository.save(entity);
+	        var dto = MyMapper.parseObject(entity, GarcomDTO.class);
+	        return dto;
+	    } else {
+	        throw new Exception("Usuário não encontrado");
+	    }
 	}
 
 	@Override
@@ -145,8 +162,27 @@ public class GarcomServicesImpl implements GarcomServices {
 		} throw new Exception("Não foi possivel loclaizar o usuário");
 		
 	}
-
 	
-
+	public GarcomDTO buscarBinariaCpf(Long cpf) throws Exception {
+		var listaGarcoms = garcomRepository.findAll().stream()
+				.sorted(Comparator.comparing(Garcom::getCpf))
+				.collect(Collectors.toList());
+		
+		Integer alto = 0;
+		Integer baixo = listaGarcoms.size() - 1;
+		
+		while(alto <= baixo) {
+			var meio = alto + (baixo - alto) / 2;
+			Garcom garcomMeio = listaGarcoms.get(meio);
+			if(garcomMeio.getCpf().equals(cpf)) { // Alterado para equals
+				return MyMapper.parseObject(garcomMeio, GarcomDTO.class);
+			} else if(garcomMeio.getCpf() < cpf) {
+				alto = meio + 1; 
+			} else {
+				baixo = meio - 1;
+			}
+		}   throw new Exception("Garcom não encontrado pelo CPF informado!");
+	}
 }
+	
 	

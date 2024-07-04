@@ -36,11 +36,11 @@ public abstract class Usuario implements Serializable {
 	@Column(name = "senha")
 	private String password;
 	
-	@Column(name = "cpf")
+	@Column(name = "cpf", unique = true)
 	private Long cpf;
 
-
-	public Usuario(String fullName, String email, String username, String password, Long cpf) {
+	public Usuario(Long id, String fullName, String email, String username, String password, Long cpf) {
+		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
 		this.username = username;
