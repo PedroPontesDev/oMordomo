@@ -1,13 +1,16 @@
 package com.devPontes.oMordomo.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +33,12 @@ public class BatedorPontoController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(list);
 	}
 	
+	@GetMapping(path = "/exibir-id/{id}")
+	public ResponseEntity<BatedorDePontoDTO> exibirBatedorPorId(@PathVariable Long id) throws Exception {
+		BatedorDePontoDTO batedorPonto = batedorService.exibirBatedorPorId(id);
+		return ResponseEntity.status(HttpStatus.FOUND).body(batedorPonto);
+	}
+	
 	@PostMapping(path = "/criar-batedor")
 	public ResponseEntity<BatedorDePontoDTO> criarBatedorPonto(@RequestBody BatedorDePontoDTO novoBatedor) throws Exception {
 		BatedorDePontoDTO setService = batedorService.criarNovoBatedorPonto(novoBatedor);
@@ -43,6 +52,25 @@ public class BatedorPontoController {
 		BatedorDePontoDTO baterPonto = batedorService.registrarPontoFuncionario(ponto, funcionarioId, batedorId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(baterPonto);
 	}
+	
+	@PutMapping(path = "/atualizar-ponto/{funcionarioId}/{batedorId}")
+	public ResponseEntity<BatedorDePontoDTO> atualizrPontoFuncionario(@RequestBody PontoDTO novoPonto, 
+			@PathVariable Long funcionarioId, @PathVariable Long batedorId) throws Exception{
+		var updatePonto = batedorService.atualizarPontoFuncionario(novoPonto, funcionarioId, batedorId);
+		return ResponseEntity.ok(updatePonto);
+		
+	}
+	
+	
+	@PostMapping(path = "/registrar-falta-funcionario/{funcionarioId}/{batedorId}")
+	public ResponseEntity<String> registrarFaltaFuncionario(
+			@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate diaDaFalta, 
+			@PathVariable Long funcionarioId, @PathVariable Long batedorId) throws Exception {
+		batedorService.registrarFaltaFuncionario(diaDaFalta, funcionarioId, batedorId);
+		return ResponseEntity.ok("Falta registrada com sucesso!");
+		
+	}
+	
 	
 	
 }

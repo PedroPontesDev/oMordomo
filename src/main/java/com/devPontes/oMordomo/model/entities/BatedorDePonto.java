@@ -32,9 +32,6 @@ public class BatedorDePonto implements Serializable {
 	@Column(name = "nome_batedor_ponto")
 	private String nomeBatedor;
 
-	@Column(name = "data_falta_mes")
-	private LocalDate dataDoMes;
-
 	@OneToMany(mappedBy = "batedorDePonto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Ponto> pontos = new ArrayList<>();
 
@@ -44,7 +41,6 @@ public class BatedorDePonto implements Serializable {
 	public BatedorDePonto(Long id, LocalDate dataDoMes, LocalDate dataFalta, List<Ponto> pontos, Boolean houveFalta,
 			String nomeBatedor) {
 		this.id = id;
-		this.dataDoMes = dataDoMes;
 		this.pontos = pontos;
 		this.houveFalta = houveFalta;
 		this.nomeBatedor = nomeBatedor;
@@ -87,22 +83,7 @@ public class BatedorDePonto implements Serializable {
 		this.pontos = pontos;
 	}
 
-	public LocalDate getdataDoMes() {
-		return dataDoMes;
-	}
-
-	public void setdataDoMes(LocalDate dataDoMes) {
-		this.dataDoMes = dataDoMes;
-	}
-
-	public LocalDate getDataDoMes() {
-		return dataDoMes;
-	}
-
-	public void setDataDoMes(LocalDate dataDoMes) {
-		this.dataDoMes = dataDoMes;
-	}
-
+/*
 	public Long calcularTotalDeHorasTrabalhadasMes(Garcom garcom) {
 		var calculo = pontos.stream().filter(p -> p.getGarcom().equals(garcom))
 				.filter(p -> p.getHorarioEntrada().getMonth().equals(this.dataDoMes.getMonth()))
@@ -110,7 +91,7 @@ public class BatedorDePonto implements Serializable {
 		garcom.setHorasTrabalhadasMes(calculo);
 		return calculo;
 	}
-
+*/
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -130,7 +111,7 @@ public class BatedorDePonto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor + ", dataDoMes=" + dataDoMes + ", pontos="
+		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor  + ", pontos="
 				+ pontos + ", houveFalta=" + houveFalta + "]";
 	}
 

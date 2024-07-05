@@ -21,10 +21,6 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 
 	private String nome;
 
-	@JsonFormat(pattern = "yyyy/MM/dd", shape = Shape.STRING)
-	@JsonProperty(value = "dataMesFalta")
-	private LocalDate dataDoMes;
-
 	private List<PontoDTO> pontos = new ArrayList<>();
 
 	private Boolean houveFalta;
@@ -32,13 +28,12 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	public BatedorDePontoDTO(Long id, String nome, LocalDate dataDoMes, List<PontoDTO> pontos, Boolean houveFalta) {
 		this.id = id;
 		this.nome = nome;
-		this.dataDoMes = dataDoMes;
 		this.pontos = pontos;
 		this.houveFalta = houveFalta;
 	}
 
 	public BatedorDePontoDTO() {
-		
+
 	}
 
 	public Long getId() {
@@ -55,14 +50,6 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public LocalDate getDataDoMes() {
-		return dataDoMes;
-	}
-
-	public void setDataDoMes(LocalDate dataDoMes) {
-		this.dataDoMes = dataDoMes;
 	}
 
 	public List<PontoDTO> getPontos() {
@@ -85,7 +72,7 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(dataDoMes, houveFalta, id, nome, pontos);
+		result = prime * result + Objects.hash(houveFalta, id, nome, pontos);
 		return result;
 	}
 
@@ -98,20 +85,14 @@ public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 		if (getClass() != obj.getClass())
 			return false;
 		BatedorDePontoDTO other = (BatedorDePontoDTO) obj;
-		return Objects.equals(dataDoMes, other.dataDoMes) && Objects.equals(houveFalta, other.houveFalta)
-				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
-				&& Objects.equals(pontos, other.pontos);
+		return Objects.equals(houveFalta, other.houveFalta) && Objects.equals(id, other.id)
+				&& Objects.equals(nome, other.nome) && Objects.equals(pontos, other.pontos);
 	}
 
 	@Override
 	public String toString() {
-		return "BatedorDePontoDTO [id=" + id + ", nome=" + nome + ", dataDoMes=" + dataDoMes + ", pontos=" + pontos
-				+ ", houveFalta=" + houveFalta + "]";
+		return "BatedorDePontoDTO [id=" + id + ", nome=" + nome + ", pontos=" + pontos + ", houveFalta=" + houveFalta
+				+ "]";
 	}
-	
-	
-	
 
-	
-
-}	
+}

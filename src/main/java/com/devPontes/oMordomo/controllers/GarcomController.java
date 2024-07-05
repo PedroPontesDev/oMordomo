@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -64,8 +65,9 @@ public class GarcomController {
 	}
 	
 	@PatchMapping(path = "/atualizar-salario/{garcomId}")
-	public ResponseEntity<GarcomDTO> alterSalarioGarcom(Long garcomId, Double novoSalario) {
-		return null;
+	public ResponseEntity<String> alterSalarioGarcom(Long garcomId, @RequestParam Double novoSalario) {
+		alterSalarioGarcom(garcomId, novoSalario);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Salário atualizado com sucesso!");
 	}
 	
 	

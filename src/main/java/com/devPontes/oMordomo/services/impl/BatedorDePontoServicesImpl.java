@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,11 +127,6 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		throw new ResourceNotFoundException(pontoGarcom.getId());
 	}
 
-	@Override
-	public BatedorDePontoDTO registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
@@ -176,4 +172,28 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 
 	}
 
+	@Override
+	@Transactional
+	public void registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId, Long batedorId) throws Exception {
+	    Optional<BatedorDePonto> batedorOptional = batedorRepository.findById(batedorId);
+	    if (batedorOptional.isPresent()) {
+	        BatedorDePonto batedor = batedorOptional.get();
+	        Garcom garcom = garcomRepository.findById(funcionarioId)
+	                .orElseThrow(() -> new Exception("Garcom não encontrado com ID: " + funcionarioId));
+
+	        Ponto novoPonto = new Ponto();
+	        novoPonto.setGarcom(garcom);
+	        novoPonto.setDataDoMes(diaDaFalta);
+	        novoPonto.setBatedorDePonto(batedor);
+	        
+	        batedor.getPontos().add(novoPonto);
+	        
+	        pontoRepository.save(novoPonto);
+	        batedorRepository.save(batedor);
+	    } else {
+	        throw new Exception("Batedor de Ponto não encontrado com ID: " + batedorId);
+	    }
+	}
+
 }
+

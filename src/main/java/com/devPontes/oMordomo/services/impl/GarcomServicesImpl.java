@@ -119,10 +119,8 @@ public class GarcomServicesImpl implements GarcomServices {
 		var garcom = garcomRepository.findById(garcomId);
 		if(garcom.isPresent()) {
 			var entity = garcom.get();
-			entity.setSalario(novoSalario);
 			garcomRepository.setReajusteSalario(novoSalario, garcomId);
 			var dto = MyMapper.parseObject(entity, GarcomDTO.class);
-			
 			return dto;
 		} throw new Exception("Usuário não encontrado");
 	}

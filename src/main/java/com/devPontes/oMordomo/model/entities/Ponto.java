@@ -1,9 +1,12 @@
 package com.devPontes.oMordomo.model.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,6 +33,11 @@ public class Ponto {
 	@Column(name = "horario_saida")
 	private LocalDateTime horarioSaida;
 
+	@JsonFormat(pattern = "yyyy/MM/dd", shape = Shape.STRING)
+	@Column(name = "data_falta_mes")
+	private LocalDate dataDoMes;
+
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "batedor_ponto.id")
@@ -38,14 +46,15 @@ public class Ponto {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "garcom_id")
 	private Garcom garcom;
-	
+
 	public Ponto(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, BatedorDePonto batedorDePonto,
-			Garcom garcom) {
+			Garcom garcom, LocalDate dataMesFalta) {
 		this.id = id;
 		this.horarioEntrada = horarioEntrada;
 		this.horarioSaida = horarioSaida;
 		this.batedorDePonto = batedorDePonto;
 		this.garcom = garcom;
+		this.dataDoMes = dataMesFalta;
 	}
 
 	public Ponto() {
@@ -91,6 +100,14 @@ public class Ponto {
 		this.garcom = garcom;
 	}
 
+	public LocalDate getDataDoMes() {
+		return dataDoMes;
+	}
+
+	public void setDataDoMes(LocalDate dataDoMes) {
+		this.dataDoMes = dataDoMes;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -111,10 +128,7 @@ public class Ponto {
 	@Override
 	public String toString() {
 		return "Ponto [id=" + id + ", horarioEntrada=" + horarioEntrada + ", horarioSaida=" + horarioSaida
-				+ ", batedorDePonto=" + batedorDePonto + ", garcom=" + garcom + "]";
+				+ ", dataDoMes=" + dataDoMes + ", batedorDePonto=" + batedorDePonto + ", garcom=" + garcom + "]";
 	}
 
-
-	
-	
 }

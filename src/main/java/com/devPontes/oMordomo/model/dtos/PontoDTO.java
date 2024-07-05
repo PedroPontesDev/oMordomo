@@ -1,12 +1,16 @@
 package com.devPontes.oMordomo.model.dtos;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class PontoDTO extends RepresentationModel<PontoDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,6 +18,10 @@ public class PontoDTO extends RepresentationModel<PontoDTO> implements Serializa
 	private Long id;
 	private LocalDateTime horarioEntrada;
 	private LocalDateTime horarioSaida;
+	
+	@JsonFormat(pattern = "yyyy/MM/dd", shape = Shape.STRING)
+	@JsonProperty(value = "dataMesFalta")
+	private LocalDate dataDoMes;
 	
 	@JsonIgnore
 	private BatedorDePontoDTO batedorDePonto;

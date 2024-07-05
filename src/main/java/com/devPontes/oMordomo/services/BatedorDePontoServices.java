@@ -12,7 +12,7 @@ public interface BatedorDePontoServices {
     BatedorDePontoDTO exibirBatedorPorId(Long batedorId) throws Exception;
     BatedorDePontoDTO registrarPontoFuncionario(PontoDTO ponto, Long funcionarioId, Long batedorId) throws Exception;
     BatedorDePontoDTO atualizarPontoFuncionario(PontoDTO ponto, Long funcionarioId, Long batedorId) throws Exception;
-    BatedorDePontoDTO registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId) throws Exception;
+    void registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId, Long batedorId) throws Exception;
     Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception;
     Double calcularBonusSalario(Long funcionarioId, Double reajuste) throws Exception;
     PontoDTO exibirPontoFuncionario(Long funcionarioId) throws Exception;
