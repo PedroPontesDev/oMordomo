@@ -18,26 +18,35 @@ public class PontoDTO extends RepresentationModel<PontoDTO> implements Serializa
 	private Long id;
 	private LocalDateTime horarioEntrada;
 	private LocalDateTime horarioSaida;
-	
+
 	@JsonFormat(pattern = "yyyy/MM/dd", shape = Shape.STRING)
 	@JsonProperty(value = "dataMesFalta")
 	private LocalDate dataDoMes;
-	
+
 	@JsonIgnore
 	private BatedorDePontoDTO batedorDePonto;
-	
+
 	private Long garcomId;
+
+	public PontoDTO(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, LocalDate dataDoMes,
+			BatedorDePontoDTO batedorDePonto, Long garcomId) {
+		this.id = id;
+		this.horarioEntrada = horarioEntrada;
+		this.horarioSaida = horarioSaida;
+		this.dataDoMes = dataDoMes;
+		this.batedorDePonto = batedorDePonto;
+		this.garcomId = garcomId;
+	}
 
 	public PontoDTO() {
 	}
 
-	public PontoDTO(Long id, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, BatedorDePontoDTO batedorDePonto,
-			Long garcomId) {
-		this.id = id;
-		this.horarioEntrada = horarioEntrada;
-		this.horarioSaida = horarioSaida;
-		this.batedorDePonto = batedorDePonto;
-		this.garcomId = garcomId;
+	public LocalDate getDataDoMes() {
+		return dataDoMes;
+	}
+
+	public void setDataDoMes(LocalDate dataDoMes) {
+		this.dataDoMes = dataDoMes;
 	}
 
 	public Long getId() {
@@ -107,7 +116,4 @@ public class PontoDTO extends RepresentationModel<PontoDTO> implements Serializa
 				+ ", batedorDePonto=" + batedorDePonto + ", garcomId=" + garcomId + "]";
 	}
 
-
-	
-	
 }

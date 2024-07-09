@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +55,7 @@ public class BatedorPontoController {
 	}
 	
 	@PutMapping(path = "/atualizar-ponto/{funcionarioId}/{batedorId}")
-	public ResponseEntity<BatedorDePontoDTO> atualizrPontoFuncionario(@RequestBody PontoDTO novoPonto, 
+	public ResponseEntity<BatedorDePontoDTO> atualizarPontoFuncionario(@RequestBody PontoDTO novoPonto, 
 			@PathVariable Long funcionarioId, @PathVariable Long batedorId) throws Exception{
 		var updatePonto = batedorService.atualizarPontoFuncionario(novoPonto, funcionarioId, batedorId);
 		return ResponseEntity.ok(updatePonto);
@@ -71,6 +72,11 @@ public class BatedorPontoController {
 		
 	}
 	
+	@PostMapping(path = "/calcular-horas-funcionario/{funcionarioId}")
+	public ResponseEntity<Long> calcularHorasFuncionarMes(@PathVariable Long funcionarioId) throws Exception {
+		Long total = batedorService.calcularHorasFuncionarioMes(funcionarioId);
+		return ResponseEntity.ok(total);
+	}
 	
 	
 }

@@ -111,8 +111,7 @@ public class BatedorDePonto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor  + ", pontos="
-				+ pontos + ", houveFalta=" + houveFalta + "]";
+	    return "BatedorDePonto [id=" + id + ", nomeBatedor=" + nomeBatedor + ", houveFalta=" + houveFalta + "]";
 	}
 
 	

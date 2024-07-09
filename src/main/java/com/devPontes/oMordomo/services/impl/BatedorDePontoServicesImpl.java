@@ -15,6 +15,7 @@ import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.model.entities.BatedorDePonto;
 import com.devPontes.oMordomo.model.entities.Garcom;
 import com.devPontes.oMordomo.model.entities.Ponto;
+import com.devPontes.oMordomo.model.entities.Usuario;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.BatedorPontoRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
@@ -73,34 +74,34 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 	public BatedorDePontoDTO registrarPontoFuncionario(PontoDTO ponto, Long funcionarioId, Long batedorId) {
-	    Ponto pontoNovo = MyMapper.parseObject(ponto, Ponto.class);
-	    var funcionario = garcomRepository.findById(funcionarioId);
-	    var batedor = batedorRepository.findById(batedorId);
+		Ponto pontoNovo = MyMapper.parseObject(ponto, Ponto.class);
+		var funcionario = garcomRepository.findById(funcionarioId);
+		var batedor = batedorRepository.findById(batedorId);
 
-	    if (batedor.isPresent() && funcionario.isPresent()) {
-	        Garcom garcom = funcionario.get();
-	        BatedorDePonto batedorDePonto = batedor.get();
+		if (batedor.isPresent() && funcionario.isPresent()) {
+			Garcom garcom = funcionario.get();
+			BatedorDePonto batedorDePonto = batedor.get();
 
-	        // Configurar as relações
-	        pontoNovo.setGarcom(garcom);
-	        pontoNovo.setBatedorDePonto(batedorDePonto);
-	        
-	        // Salvar o ponto primeiro para garantir que ele tenha um ID
-	        pontoNovo = pontoRepository.save(pontoNovo);
+			// Configurar as relações
+			pontoNovo.setGarcom(garcom);
+			pontoNovo.setBatedorDePonto(batedorDePonto);
 
-	        // Atualizar as coleções em Garcom e BatedorDePonto
-	        garcom.getPontos().add(pontoNovo);
-	        batedorDePonto.getPontos().add(pontoNovo);
+			// Salvar o ponto primeiro para garantir que ele tenha um ID
+			pontoNovo = pontoRepository.save(pontoNovo);
 
-	        // Salvar as entidades relacionadas
-	        garcomRepository.save(garcom);
-	        batedorRepository.save(batedorDePonto);
+			// Atualizar as coleções em Garcom e BatedorDePonto
+			garcom.getPontos().add(pontoNovo);
+			batedorDePonto.getPontos().add(pontoNovo);
 
-	        // Converter o resultado em DTO
-	        var dto = MyMapper.parseObject(batedorDePonto, BatedorDePontoDTO.class);
-	        return dto;
-	    }
-	    throw new ResourceNotFoundException("Batedor de Ponto com ID " + batedorId + " não encontrado");
+			// Salvar as entidades relacionadas
+			garcomRepository.save(garcom);
+			batedorRepository.save(batedorDePonto);
+
+			// Converter o resultado em DTO
+			var dto = MyMapper.parseObject(batedorDePonto, BatedorDePontoDTO.class);
+			return dto;
+		}
+		throw new ResourceNotFoundException("Batedor de Ponto com ID " + batedorId + " não encontrado");
 	}
 
 	@Override
@@ -127,31 +128,37 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		throw new ResourceNotFoundException(pontoGarcom.getId());
 	}
 
-
 	@Override
 	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
-		Long totalHoras = 0L;
-		var entidade = usuarioRepository.findById(funcionarioId);
-		if (entidade.isPresent()) {
-			Garcom garcom = MyMapper.parseObject(entidade, Garcom.class);
+	    Long totalHoras = 0L;
+	    var entidadeOptional = garcomRepository.findById(funcionarioId);
 
-			Map<Integer, Long> horasPorMes = new HashMap<>();
-			
-			for (Ponto ponto : garcom.getPontos()) {
-				int mes = ponto.getHorarioEntrada().getMonthValue();
-				Long horas = Duration.between(ponto.getHorarioEntrada(), ponto.getHorarioSaida()).toHours();
-				horasPorMes.put(mes, horasPorMes.getOrDefault(mes, 0L) + horas);
+	    if (entidadeOptional.isPresent()) {
+	        
+	        Garcom garcom = (Garcom) entidadeOptional.get();
 
-			}
-			totalHoras = horasPorMes.values().stream().mapToLong(Long::longValue).sum();
-			garcom.setHorasTrabalhadasMes(totalHoras);
-			garcomRepository.save(garcom);
-			return totalHoras;
-		}
-		throw new Exception("Não é possivel calcular total de horas, verifique os dados e tente novamente!"); // Tratare
-																												// com
-																												// SumException
+	        Map<Integer, Long> horasPorMes = new HashMap<>();
+
+	        for (Ponto ponto : garcom.getPontos()) {
+	            if (ponto.getHorarioEntrada() != null && ponto.getHorarioSaida() != null) {
+	                int mes = ponto.getHorarioEntrada().getMonthValue();
+	                Long horas = Duration.between(ponto.getHorarioEntrada(), ponto.getHorarioSaida()).toHours();
+	                horasPorMes.put(mes, horasPorMes.getOrDefault(mes, 0L) + horas);
+	            } else {
+	                System.out.println("Ponto com horário de entrada ou saída nulo: " + ponto);
+	            }
+	        }
+
+	        totalHoras = horasPorMes.values().stream().mapToLong(Long::longValue).sum();
+	        garcom.setHorasTrabalhadasMes(totalHoras);
+	        System.out.println("Garcom antes de salvar: " + garcom);
+	        garcomRepository.save(garcom);
+	        return totalHoras;
+	    } else {
+	        throw new Exception("Não é possível calcular total de horas, verifique os dados e tente novamente!");
+	    }
 	}
+
 
 	@Override
 	public Double calcularBonusSalario(Long funcionarioId, Double reajuste) throws Exception {
@@ -164,7 +171,7 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		var entidade = usuarioRepository.findById(funcionarioId);
 		if (entidade != null) {
 			Garcom funcionario = MyMapper.parseObject(entidade, Garcom.class);
-			for(Ponto ponto : funcionario.getPontos() ) {
+			for (Ponto ponto : funcionario.getPontos()) {
 				return MyMapper.parseObject(ponto, PontoDTO.class);
 			}
 		}
@@ -175,25 +182,24 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	@Override
 	@Transactional
 	public void registrarFaltaFuncionario(LocalDate diaDaFalta, Long funcionarioId, Long batedorId) throws Exception {
-	    Optional<BatedorDePonto> batedorOptional = batedorRepository.findById(batedorId);
-	    if (batedorOptional.isPresent()) {
-	        BatedorDePonto batedor = batedorOptional.get();
-	        Garcom garcom = garcomRepository.findById(funcionarioId)
-	                .orElseThrow(() -> new Exception("Garcom não encontrado com ID: " + funcionarioId));
+		Optional<BatedorDePonto> batedorOptional = batedorRepository.findById(batedorId);
+		if (batedorOptional.isPresent()) {
+			BatedorDePonto batedor = batedorOptional.get();
+			Garcom garcom = garcomRepository.findById(funcionarioId)
+					.orElseThrow(() -> new Exception("Garcom não encontrado com ID: " + funcionarioId));
 
-	        Ponto novoPonto = new Ponto();
-	        novoPonto.setGarcom(garcom);
-	        novoPonto.setDataDoMes(diaDaFalta);
-	        novoPonto.setBatedorDePonto(batedor);
-	        
-	        batedor.getPontos().add(novoPonto);
-	        
-	        pontoRepository.save(novoPonto);
-	        batedorRepository.save(batedor);
-	    } else {
-	        throw new Exception("Batedor de Ponto não encontrado com ID: " + batedorId);
-	    }
+			Ponto novoPonto = new Ponto();
+			novoPonto.setGarcom(garcom);
+			novoPonto.setDataDoMes(diaDaFalta);
+			novoPonto.setBatedorDePonto(batedor);
+
+			batedor.getPontos().add(novoPonto);
+
+			pontoRepository.save(novoPonto);
+			batedorRepository.save(batedor);
+		} else {
+			throw new Exception("Batedor de Ponto não encontrado com ID: " + batedorId);
+		}
 	}
 
 }
-

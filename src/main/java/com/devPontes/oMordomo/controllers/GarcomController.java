@@ -65,13 +65,11 @@ public class GarcomController {
 	}
 	
 	@PatchMapping(path = "/atualizar-salario/{garcomId}")
-	public ResponseEntity<String> alterSalarioGarcom(Long garcomId, @RequestParam Double novoSalario) {
-		alterSalarioGarcom(garcomId, novoSalario);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Salário atualizado com sucesso!");
+	public ResponseEntity<String> alterSalarioGarcom(@PathVariable Long garcomId, @RequestParam Double novoSalario) throws Exception {
+		garcomServices.alterarSalarioGarcom(garcomId, novoSalario);
+		return ResponseEntity.status(HttpStatus.OK).body("Salário atualizado com sucesso!");
 	}
 	
-	
-	
-	
+
 	
 }

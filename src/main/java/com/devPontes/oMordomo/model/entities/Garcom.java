@@ -114,7 +114,7 @@ public class Garcom extends Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Garcom [id=" + id + ", salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes
-				+ ", pontos=" + pontos + ", teveFalta=" + teveFalta + "]";
+				+ ", teveFalta=" + teveFalta + "]";
 	}
 
 	

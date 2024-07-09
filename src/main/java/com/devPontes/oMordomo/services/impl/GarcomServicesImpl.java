@@ -116,13 +116,15 @@ public class GarcomServicesImpl implements GarcomServices {
 	@Transactional
 	@Override
 	public GarcomDTO alterarSalarioGarcom(Long garcomId, Double novoSalario) throws Exception {
-		var garcom = garcomRepository.findById(garcomId);
-		if(garcom.isPresent()) {
-			var entity = garcom.get();
-			garcomRepository.setReajusteSalario(novoSalario, garcomId);
-			var dto = MyMapper.parseObject(entity, GarcomDTO.class);
-			return dto;
-		} throw new Exception("Usuário não encontrado");
+	    var garcomOptional = garcomRepository.findById(garcomId);
+	    if (garcomOptional.isPresent()) {
+	        garcomRepository.setReajusteSalario(novoSalario, garcomId);
+	        Garcom garcom = garcomOptional.get();
+	        garcom.setSalario(novoSalario); // Atualiza o objeto na memória
+	        return MyMapper.parseObject(garcom, GarcomDTO.class);
+	    } else {
+	        throw new Exception("Usuário não encontrado");
+	    }
 	}
 	
 	@Transactional
@@ -172,7 +174,7 @@ public class GarcomServicesImpl implements GarcomServices {
 		while(alto <= baixo) {
 			var meio = alto + (baixo - alto) / 2;
 			Garcom garcomMeio = listaGarcoms.get(meio);
-			if(garcomMeio.getCpf().equals(cpf)) { // Alterado para equals
+			if(garcomMeio.getCpf().equals(cpf)) { 
 				return MyMapper.parseObject(garcomMeio, GarcomDTO.class);
 			} else if(garcomMeio.getCpf() < cpf) {
 				alto = meio + 1; 
