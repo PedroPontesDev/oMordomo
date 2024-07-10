@@ -9,29 +9,29 @@ import com.devPontes.oMordomo.model.enums.StatusMesa;
 
 public interface MesaServices {
 	
-	List<MesaDTO> exibirTodasMesas();
+	List<MesaDTO> exibirTodasMesas() throws Exception;
 	
-	MesaDTO exibirMesaPorIdentificador(Long id);
+	MesaDTO exibirMesaPorIdentificador(Long id) throws Exception;
 	
-	MesaDTO registrarNovaMesa(MesaDTO mesaDTO);
+	MesaDTO registrarNovaMesa(MesaDTO mesaDTO) throws Exception;
 	
-	MesaDTO atualizarMesa(Long mesaExistenteId, MesaDTO update);
+	MesaDTO atualizarMesa(Long mesaExistenteId, MesaDTO update) throws Exception;
 	
-	MesaDTO visualizarEstadoMesa(Long mesaId, String statusMesa);
+	MesaDTO visualizarEstadoMesa(Long mesaId, String statusMesa) throws Exception;
 	
-	MesaDTO atualizarEstadoDeMesa(String status, StatusMesa statusMesa, Long mesaId);
+	MesaDTO atualizarEstadoDeMesa(String status, StatusMesa statusMesa, Long mesaId) throws Exception;
 	
-	void ocuparMesa(Long mesaId, String statusMesa);
+	void ocuparMesa(Long mesaId, String statusMesa) throws Exception;
 	
-	void registrarHistoricoDeOcupacao(Long mesaId, LocalDateTime horarioInicio, LocalDateTime horarioFim);
+	void registrarHistoricoDeOcupacao(Long mesaId, LocalDateTime horarioInicio, LocalDateTime horarioFim) throws Exception;
 	
-	ComandaDTO abrirComanda(Long mesaId);
+	ComandaDTO abrirComanda(Long mesaId) throws Exception;
 	
-	void adicionarItemNaComanda(Long mesaId, Long itemId, Long comandaId);
+	void adicionarItemNaComanda(Long mesaId, Long itemId, Long comandaId)throws Exception;
 	
-	void removerItemDaComanda(Long mesaId, Long itemId);
+	void removerItemDaComanda(Long mesaId, Long itemId)throws Exception;
 	
-	ComandaDTO fecharComanda(Long comandaId);
+	ComandaDTO fecharComanda(Long comandaId)throws Exception;
 	
 	void excluirMesa(Long mesaId);
 	

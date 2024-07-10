@@ -13,11 +13,14 @@ import org.springframework.stereotype.Service;
 
 import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+import com.devPontes.oMordomo.model.dtos.ItemDTO;
 import com.devPontes.oMordomo.model.entities.Comanda;
 import com.devPontes.oMordomo.model.entities.Garcom;
+import com.devPontes.oMordomo.model.entities.Item;
 import com.devPontes.oMordomo.model.entities.Ponto;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
+import com.devPontes.oMordomo.repositories.MesaRepository;
 import com.devPontes.oMordomo.repositories.PontoRepository;
 import com.devPontes.oMordomo.services.GarcomServices;
 
@@ -32,7 +35,8 @@ public class GarcomServicesImpl implements GarcomServices {
 	@Autowired
 	PontoRepository pontoRepository;
 	
-	//A implementar o repositorio de Comandas
+	@Autowired
+	MesaRepository mesaRepository;
 
 	@Override
 	public List<GarcomDTO> listarTodos() throws AccountNotFoundException  {
@@ -142,9 +146,14 @@ public class GarcomServicesImpl implements GarcomServices {
 	}
 
 	@Override
-	public ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, Long garcomId, Long mesaId, Long clientId) throws Exception {
+	public ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, List<ItemDTO> items, Long garcomId, Long mesaId, Long clientId) throws Exception {
 		Comanda novaComanda = MyMapper.parseObject(abrirComanda, Comanda.class);
-		return  null; //A implementar metodo 
+		var itemsEntity = MyMapper.parseListObjects(items, Item.class);
+		var garcom = garcomRepository.findById(garcomId);
+		var mesa = mesaRepository.findById(mesaId);
+		novaComanda.getItems().addAll(itemsEntity);
+	
+		return abrirComanda;
 		
 	}
 

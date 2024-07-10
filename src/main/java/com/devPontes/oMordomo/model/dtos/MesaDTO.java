@@ -18,6 +18,7 @@ public class MesaDTO {
   
     @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT", shape = Shape.STRING)
     private LocalDateTime horarioSaida;
+    
     private Long totalDeHorasMesa;
 
     public MesaDTO(Long id, StatusMesa statusMesa, Long comandaId, LocalDateTime horarioOcupacao,
