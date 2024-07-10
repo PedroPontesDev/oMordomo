@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -24,12 +25,16 @@ public class Cliente extends Usuario {
 
 	@Column(name = "houve_pagamento")
 	private Boolean pagou;
+	
+	@OneToOne(mappedBy = "clienteComanda")
+	private Comanda comandaCliente;
 
 	public Cliente(Long id, String fullName, String email, String username, String password, Long cpf, Double valorDePagamento,
-			Boolean pagou) {
+			Boolean pagou, Comanda comanda) {
 		super(id, fullName, email, username, password, cpf);
 		this.valorDePagamento = valorDePagamento;
 		this.pagou = pagou;
+		this.comandaCliente = comanda;
 	}
 
 	public Cliente() {
@@ -58,6 +63,16 @@ public class Cliente extends Usuario {
 
 	public void setValorDePagamento(Double valorDePagamento) {
 		this.valorDePagamento = valorDePagamento;
+	}
+	
+	
+
+	public Comanda getComandaCliente() {
+		return comandaCliente;
+	}
+
+	public void setComandaCliente(Comanda comandaCliente) {
+		this.comandaCliente = comandaCliente;
 	}
 
 	@Override

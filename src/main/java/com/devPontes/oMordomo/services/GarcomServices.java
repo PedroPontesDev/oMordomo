@@ -13,9 +13,9 @@ public interface GarcomServices {
 	GarcomDTO registrarNovoGarcom(GarcomDTO novoGarcom) throws Exception;
 	GarcomDTO atualizarGarcomExistente(Long garcomId, GarcomDTO update) throws Exception;
 	GarcomDTO alterarSalarioGarcom(Long garcomId, Double novoSalario) throws Exception;
-	ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, Long garcomId) throws Exception; 
-	void fecharComanda(Long comandaId) throws Exception;
 	void deletarGarcomExistente(Long garcomId) throws Exception;
+	ComandaDTO abrirNovaComanda(ComandaDTO abrirComanda, Long garcomId, Long mesaId, Long clientId) throws Exception;
+	void fecharComanda(Long comandaId) throws Exception;
 	
 	//Criar depois a entidade ITEM para incluir na entidade de Comanda
 	

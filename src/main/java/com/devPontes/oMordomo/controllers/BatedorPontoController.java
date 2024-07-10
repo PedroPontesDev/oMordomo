@@ -28,6 +28,13 @@ public class BatedorPontoController {
 	@Autowired
 	private BatedorDePontoServicesImpl batedorService;
 	
+	@GetMapping(path = "/exibir-ponto-funcionario/{funcionarioId}")
+	public ResponseEntity<PontoDTO> exibirPontoFuncionario(@PathVariable Long funcionarioId) throws Exception {
+		var ponto = batedorService.exibirPontoFuncionario(funcionarioId);
+		return null;
+		
+	}
+	
 	@GetMapping(path = "/exibir-todos")
 	public ResponseEntity<List<BatedorDePontoDTO>> listarTodosBatedoresDePonto() throws Exception {
 		List<BatedorDePontoDTO> list = batedorService.exibirTodosBatedorDePonto();

@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -36,19 +39,21 @@ public class Garcom extends Usuario implements Serializable {
 	@Column(name = "teve_falta")
 	private Boolean teveFalta;
 
-	// A implementar relação com Comandas
-
-	public Garcom() {
-
-	}
+	@OneToMany(mappedBy = "garcomComanda", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Comanda> comandas = new TreeSet<>();
 
 	public Garcom(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, List<Ponto> pontos, Boolean teveFalta) {
+			Long horasTrabalhadasMes, List<Ponto> pontos, Boolean teveFalta, Set<Comanda> comandas) {
 		super(id, fullName, email, username, password, cpf);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
+		this.comandas = comandas;
+	}
+
+	public Garcom() {
+
 	}
 
 	public List<Ponto> getPontos() {
@@ -83,13 +88,16 @@ public class Garcom extends Usuario implements Serializable {
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 	}
 
-
 	public Boolean getTeveFalta() {
 		return teveFalta;
 	}
 
 	public void setTeveFalta(Boolean teveFalta) {
 		this.teveFalta = teveFalta;
+	}
+
+	public Set<Comanda> getComandas() {
+		return comandas;
 	}
 
 	@Override
@@ -116,7 +124,5 @@ public class Garcom extends Usuario implements Serializable {
 		return "Garcom [id=" + id + ", salario=" + salario + ", horasTrabalhadasMes=" + horasTrabalhadasMes
 				+ ", teveFalta=" + teveFalta + "]";
 	}
-
-	
 
 }
