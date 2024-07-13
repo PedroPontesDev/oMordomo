@@ -83,31 +83,6 @@ public class MesaServicesImpl implements MesaServices {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public ComandaDTO abrirComanda(Long mesaId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void adicionarItemNaComanda(Long mesaId, Long itemId, Long comandaId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removerItemDaComanda(Long mesaId, Long itemId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ComandaDTO fecharComanda(Long comandaId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void excluirMesa(Long mesaId) {
 		// TODO Auto-generated method stub

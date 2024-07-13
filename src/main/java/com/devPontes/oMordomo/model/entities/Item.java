@@ -1,5 +1,7 @@
 package com.devPontes.oMordomo.model.entities;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -110,6 +112,45 @@ public class Item {
 	public void setTemEmEstoque(Boolean temEmEstoque) {
 		this.temEmEstoque = temEmEstoque;
 	}
+
+	public Comanda getComanda() {
+		return comanda;
+	}
+
+	public void setComanda(Comanda comanda) {
+		this.comanda = comanda;
+	}
+
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(comanda, descrição, id, imgUrl, nome, preço, quantidade, temEmEstoque);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		return Objects.equals(comanda, other.comanda) && Objects.equals(descrição, other.descrição)
+				&& Objects.equals(id, other.id) && Objects.equals(imgUrl, other.imgUrl)
+				&& Objects.equals(nome, other.nome) && Objects.equals(preço, other.preço)
+				&& Objects.equals(quantidade, other.quantidade) && Objects.equals(temEmEstoque, other.temEmEstoque);
+	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", nome=" + nome + ", imgUrl=" + imgUrl + ", descrição=" + descrição + ", preço="
+				+ preço + ", quantidade=" + quantidade + ", temEmEstoque=" + temEmEstoque + ", comanda=" + comanda
+				+ "]";
+	}
+	
+	
 	
 	
 	

@@ -25,14 +25,6 @@ public interface MesaServices {
 	
 	void registrarHistoricoDeOcupacao(Long mesaId, LocalDateTime horarioInicio, LocalDateTime horarioFim) throws Exception;
 	
-	ComandaDTO abrirComanda(Long mesaId) throws Exception;
-	
-	void adicionarItemNaComanda(Long mesaId, Long itemId, Long comandaId)throws Exception;
-	
-	void removerItemDaComanda(Long mesaId, Long itemId)throws Exception;
-	
-	ComandaDTO fecharComanda(Long comandaId)throws Exception;
-	
 	void excluirMesa(Long mesaId);
 	
 	// Método para adicionar uma lista de itens na comanda

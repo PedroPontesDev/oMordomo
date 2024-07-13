@@ -151,10 +151,11 @@ public class GarcomServicesImpl implements GarcomServices {
 		var itemsEntity = MyMapper.parseListObjects(items, Item.class);
 		var garcom = garcomRepository.findById(garcomId);
 		var mesa = mesaRepository.findById(mesaId);
-		novaComanda.getItems().addAll(itemsEntity);
-	
-		return abrirComanda;
-		
+		if(garcom.isPresent() && mesa.isPresent() && !itemsEntity.isEmpty()) {
+			novaComanda.getItems().addAll(itemsEntity);
+			novaComanda.setGarcomComanda(garcom.get());
+		}
+		return abrirComanda;	//A TERMINAR IMPLEMENTAÇÃO! 
 	}
 
 	@Override
