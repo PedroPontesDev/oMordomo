@@ -15,7 +15,7 @@ public class ComandaDTO {
     private Long garcomComandaId;
     private Long clienteComandaId;
     private Long mesaId;
-    private Integer[] notaAtendimento;
+    private Integer[] notaAtendimento = {0, 1, 2, 3, 4, 5};
 
     private List<ItemDTO> items = new ArrayList<>();
 

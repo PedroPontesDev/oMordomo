@@ -68,6 +68,7 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		var entidade = batedorRepository.findById(batedorId);
 		if (entidade.isPresent()) {
 			var dto = MyMapper.parseObject(entidade.get(), BatedorDePontoDTO.class);
+			dto.add(link)
 			return dto;
 		}
 		throw new Exception("O batedor de ponto não existe!");
@@ -85,7 +86,8 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 			// Configurar as relações
 			pontoNovo.setGarcom(garcom);
 			pontoNovo.setBatedorDePonto(batedorDePonto);
-
+			pontoNovo.setHorarioEntrada(ponto.getHorarioEntrada());
+			pontoNovo.setHorarioSaida(ponto.getHorarioSaida());
 			// Salvar o ponto primeiro para garantir que ele tenha um ID
 			pontoNovo = pontoRepository.save(pontoNovo);
 

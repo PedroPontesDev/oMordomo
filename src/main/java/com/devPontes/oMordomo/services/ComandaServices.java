@@ -4,8 +4,7 @@ import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 
 public interface ComandaServices {
 
-	
-	ComandaDTO abrirComanda(Long mesaId) throws Exception;
+	ComandaDTO abrirComanda(ComandaDTO novaComanda, Long mesaId, Long garcomId) throws Exception;
 	
 	void adicionarItemNaComanda(Long mesaId, Long itemId, Long comandaId)throws Exception;
 	
@@ -16,4 +15,6 @@ public interface ComandaServices {
 	Double calcularSubTotal(Long comandaId);
 	
 	Double calcularTotal(Long comandaId);
+
+	
 }
