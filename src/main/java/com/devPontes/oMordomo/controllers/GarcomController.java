@@ -20,8 +20,12 @@ import com.devPontes.oMordomo.services.impl.ComandaServicesImpl;
 import com.devPontes.oMordomo.services.impl.GarcomServicesImpl;
 import com.devPontes.oMordomo.services.impl.MesaServicesImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping(path = "/api/v1/garcom")
+@Tag(name = "Gerenciamento De Garcom")
 public class GarcomController {
 	
 	@Autowired
@@ -33,7 +37,8 @@ public class GarcomController {
 	@Autowired
 	MesaServicesImpl mesaServices;
 	
-	
+
+	@Operation(summary = "", description = "Listar todos garçom da base de dados!", tags = "Gerenciamento De Garçom")
 	@GetMapping(path = "/listar-todos")
 	public ResponseEntity<List<GarcomDTO>> listarTodosGarcoms() throws Exception {
 		var todosGarcom =  garcomServices.listarTodos();

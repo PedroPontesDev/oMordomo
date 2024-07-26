@@ -25,13 +25,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping(path = "/api/v1/controle-ponto")
-@Tag(name = "BatedorPonto")
+@Tag(name = "Batedor De Ponto")
 public class BatedorPontoController {
 	
 	@Autowired
 	private BatedorDePontoServicesImpl batedorService;
 	
-	@Operation(description = "", tags = "BatedorPonto")
+	@Operation(summary = "", description = "", tags = "Batedor De Ponto")
 	@GetMapping(path = "/exibir-ponto-funcionario/{funcionarioId}")
 	public ResponseEntity<PontoDTO> exibirPontoFuncionario(@PathVariable Long funcionarioId) throws Exception {
 		var ponto = batedorService.exibirPontoFuncionario(funcionarioId);

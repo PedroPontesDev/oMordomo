@@ -17,7 +17,7 @@ public class OpenApiConfig {
 							.title("Gerenciador de Restaurantes - O Mordomo")
 							.version("v1")
 							.description("Um webservcice que provê diversas funcionalidas para gerenciar restaurantes de todos os portes!"));
-					
+							
 	}
 	
 }
