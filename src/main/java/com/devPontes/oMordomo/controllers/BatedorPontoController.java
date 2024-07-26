@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +20,18 @@ import com.devPontes.oMordomo.model.dtos.BatedorDePontoDTO;
 import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.services.impl.BatedorDePontoServicesImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping(path = "/api/v1/controle-ponto")
+@Tag(name = "BatedorPonto")
 public class BatedorPontoController {
 	
 	@Autowired
 	private BatedorDePontoServicesImpl batedorService;
 	
+	@Operation(description = "", tags = "BatedorPonto")
 	@GetMapping(path = "/exibir-ponto-funcionario/{funcionarioId}")
 	public ResponseEntity<PontoDTO> exibirPontoFuncionario(@PathVariable Long funcionarioId) throws Exception {
 		var ponto = batedorService.exibirPontoFuncionario(funcionarioId);
