@@ -11,7 +11,7 @@ import com.devPontes.oMordomo.model.entities.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 	
 	@Query(value = "SELECT * FROM tb_item WHERE preco >= :precoMedia", nativeQuery = true)
-	public List<Item> filterByPrecoMaiorOuIgualMedia(@Param("precoMedia") Double precoMedia);
+	public List<Item> filterByPrecoMaiorOuIgualMedia(@Param("precoMedia") Double precoMedia); //Primeiro metodo de ItemsServices feito por Query
 
 
 	
