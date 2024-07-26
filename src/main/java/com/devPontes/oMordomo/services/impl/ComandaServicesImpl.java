@@ -1,11 +1,15 @@
 package com.devPontes.oMordomo.services.impl;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devPontes.oMordomo.model.dtos.ComandaDTO;
 import com.devPontes.oMordomo.model.entities.Comanda;
-import com.devPontes.oMordomo.model.enums.StatusMesa;
+import com.devPontes.oMordomo.model.entities.Garcom;
+import com.devPontes.oMordomo.model.entities.Mesa;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.ComandaRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
@@ -32,44 +36,54 @@ public class ComandaServicesImpl implements ComandaServices {
 	private ItemRepository itemRepository;
 
 	@Override
-	public ComandaDTO abrirComanda(ComandaDTO novaComanda, Long mesaId, Long garcomId) throws Exception {
-		Comanda newComanda = MyMapper.parseObject(novaComanda, Comanda.class);
-		var mesa = mesaRepository.findById(mesaId);
-		var garcom = garcomRepository.findById(garcomId);
-		if(mesa.isPresent() && garcom.isPresent()) {
-			newComanda.setDiaPedido(novaComanda.getDiaPedido());
-			newComanda.setGarcomComanda(garcom.get());
-			newComanda.setMesa(mesa.get());
-			mesa.get().setStatusMesa(StatusMesa.OCUPADA);
-			newComanda.setEstaFechada(false);
-			var entidade = MyMapper.parseObject(newComanda, ComandaDTO.class);
-			return entidade;
-		} 
-		throw new Exception("Não foi possivel abrir uma comanda, verifique os dados e tente novamente!");
+	public ComandaDTO abrirComanda(ComandaDTO novaComanda, Long mesaId, Long garcomId) throws Exception { //Tempo de execução Algoritmo -> O(1)
+		Comanda comanda = MyMapper.parseObject(novaComanda, Comanda.class);
+		Mesa mesa = mesaRepository.findById(mesaId).orElseThrow(() -> new Exception("")); //O(1) Notation
+		Garcom garcom = garcomRepository.findById(garcomId).orElseThrow(() -> new Exception("")); //O(1) Notation
+		if(comanda != null) {
+			comanda.setDiaPedido(LocalDate.now());
+			comanda.setEstaFechada(false);
+			comanda.setSubTotal(0D);
+			comanda.setTotal(0D);
+			comanda.setGarcomComanda(garcom);
+			comanda.setMesa(mesa);
+			comandaRepository.save(comanda); //Tempo de execução (1) para essa função
+			return MyMapper.parseObject(comanda, ComandaDTO.class); // Retorna a comanda criada (1)
+		} throw new Exception("Não foi possivel registar uma nova comanda");
+	
+	}
+
+	
+	@Override
+	public ComandaDTO fecharComanda(Long comandaId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	@Transactional
-    public void adicionarItemNaComanda(Long itemId, Long comandaId) throws Exception {
-        var item = itemRepository.findById(itemId).orElseThrow(() -> new Exception("Item não encontrado"));
-        var comanda = comandaRepository.findById(comandaId).orElseThrow(() -> new Exception("Comanda não encontrada"));
+    public void adicionarItemNaComanda(Long itemId, Long comandaId) throws Exception { 		//O(1) Notation
+        var item = itemRepository.findById(itemId).orElseThrow(() -> new Exception("Item não encontrado")); //O(1)
+        var comanda = comandaRepository.findById(comandaId).orElseThrow(() -> new Exception("Comanda não encontrada")); //O(1)
         if (comanda.isEstaFechada()) {
             throw new Exception("Comanda está fechada, não foi possível adicionar o item!");
         }
         comanda.getItems().add(item);
-        comandaRepository.save(comanda);
+        comandaRepository.save(comanda);	//O(1)
     }
+	
+
 
 	@Override
-	public void removerItemDaComanda(Long mesaId, Long itemId) throws Exception {
+	public void removerItemDaComanda(Long comandaId) throws Exception { //O(n)
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public ComandaDTO fecharComanda(Long comandaId) throws Exception {
+	public void adicionarMultiplosItemsComanda(List<Long> itemsId, Long comandaId) throws Exception { //O(n) Notation
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
@@ -84,6 +98,7 @@ public class ComandaServicesImpl implements ComandaServices {
 		return null;
 	}
 
+	
 	
 }
 	
