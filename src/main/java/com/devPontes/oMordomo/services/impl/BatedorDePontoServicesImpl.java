@@ -53,12 +53,7 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		if (novoBatedor == null) {
 			throw new ResourceNotFoundException(novoBatedor.getId());
 		}
-
 		BatedorDePonto newBatedor = MyMapper.parseObject(novoBatedor, BatedorDePonto.class);
-		if (newBatedor == null) {
-			throw new ResourceNotFoundException("Os dados estão inconsistentes, tente novamente!");
-		}
-
 		batedorRepository.save(newBatedor);
 		return MyMapper.parseObject(newBatedor, BatedorDePontoDTO.class);
 	}
@@ -68,7 +63,6 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 		var entidade = batedorRepository.findById(batedorId);
 		if (entidade.isPresent()) {
 			var dto = MyMapper.parseObject(entidade.get(), BatedorDePontoDTO.class);
-			dto.add(link)
 			return dto;
 		}
 		throw new Exception("O batedor de ponto não existe!");
@@ -134,11 +128,8 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
 	    Long totalHoras = 0L;
 	    var entidadeOptional = garcomRepository.findById(funcionarioId);
-
 	    if (entidadeOptional.isPresent()) {
-	        
-	        Garcom garcom = (Garcom) entidadeOptional.get();
-
+	        Garcom garcom = entidadeOptional.get();
 	        Map<Integer, Long> horasPorMes = new HashMap<>();
 
 	        for (Ponto ponto : garcom.getPontos()) {
@@ -196,7 +187,9 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 			novoPonto.setBatedorDePonto(batedor);
 
 			batedor.getPontos().add(novoPonto);
-
+			batedor.setHouveFalta(true);
+			garcom.setTeveFalta(true);
+			garcomRepository.save(garcom);
 			pontoRepository.save(novoPonto);
 			batedorRepository.save(batedor);
 		} else {

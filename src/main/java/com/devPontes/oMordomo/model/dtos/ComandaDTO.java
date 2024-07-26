@@ -15,12 +15,14 @@ public class ComandaDTO {
     private Long garcomComandaId;
     private Long clienteComandaId;
     private Long mesaId;
-    private Integer[] notaAtendimento = {0, 1, 2, 3, 4, 5};
+    private Integer[] notaAtendimento;
 
     private List<ItemDTO> items = new ArrayList<>();
 
+    private boolean estaFechada;
+    
     public ComandaDTO(Long id, Double subTotal, Double total, LocalDate diaPedido, Long garcomComandaId,
-            Long clienteComandaId, Long mesaId, Integer[] notaAtendimento, List<ItemDTO> items) {
+            Long clienteComandaId, Long mesaId, Integer[] notaAtendimento, List<ItemDTO> items, boolean estaFechada) {
         this.id = id;
         this.subTotal = subTotal;
         this.total = total;
@@ -30,6 +32,7 @@ public class ComandaDTO {
         this.mesaId = mesaId;
         this.notaAtendimento = notaAtendimento;
         this.items = items;
+        this.estaFechada = estaFechada;
     }
 
     public ComandaDTO() {
@@ -107,8 +110,16 @@ public class ComandaDTO {
     public void setItems(List<ItemDTO> items) {
         this.items = items;
     }
+    
+    public boolean isEstaFechada() {
+		return estaFechada;
+	}
 
-    @Override
+	public void setEstaFechada(boolean estaFechada) {
+		this.estaFechada = estaFechada;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hash(id);
     }
@@ -125,11 +136,13 @@ public class ComandaDTO {
         return Objects.equals(id, other.id);
     }
 
-    @Override
-    public String toString() {
-        return "ComandaDTO [id=" + id + ", subTotal=" + subTotal + ", total=" + total + ", diaPedido=" + diaPedido
-                + ", garcomComandaId=" + garcomComandaId + ", clienteComandaId=" + clienteComandaId + ", mesaId="
-                + mesaId + ", notaAtendimento=" + Arrays.toString(notaAtendimento) + ", items=" + items + "]";
-    }
+	@Override
+	public String toString() {
+		return "ComandaDTO [id=" + id + ", subTotal=" + subTotal + ", total=" + total + ", diaPedido=" + diaPedido
+				+ ", garcomComandaId=" + garcomComandaId + ", clienteComandaId=" + clienteComandaId + ", mesaId="
+				+ mesaId + ", notaAtendimento=" + Arrays.toString(notaAtendimento) + ", items=" + items
+				+ ", estaFechada=" + estaFechada + "]";
+	}
+
 
 }

@@ -1,17 +1,17 @@
 package com.devPontes.oMordomo.model.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,13 +36,12 @@ public class Item {
 	@Column(name = "tem_em_estoque")
 	private Boolean temEmEstoque;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Comanda comanda;
+	@ManyToMany
+	@JoinTable(name = "items_de_comanda", joinColumns = @JoinColumn(name = "comanda.id"), inverseJoinColumns = @JoinColumn(name = "items.id"))
+	private List<Comanda> comandas = new ArrayList<>();
 
 	public Item(Long id, String nome, String imgUrl, String descrição, Double preço, Integer quantidade,
-			Boolean temEmEstoque, Comanda comanda) {
-		super();
+			Boolean temEmEstoque, List<Comanda> comandas) {
 		this.id = id;
 		this.nome = nome;
 		this.imgUrl = imgUrl;
@@ -50,7 +49,7 @@ public class Item {
 		this.preço = preço;
 		this.quantidade = quantidade;
 		this.temEmEstoque = temEmEstoque;
-		this.comanda = comanda;
+		this.comandas = comandas;
 	}
 
 	public Item() {
@@ -106,26 +105,23 @@ public class Item {
 	}
 
 	public Boolean getTemEmEstoque() {
-		return temEmEstoque;
+		if(quantidade <= 0) {
+			return false;
+		} return true;
+	}
+	
+
+	public List<Comanda> getComandas() {
+		return comandas;
 	}
 
 	public void setTemEmEstoque(Boolean temEmEstoque) {
 		this.temEmEstoque = temEmEstoque;
 	}
 
-	public Comanda getComanda() {
-		return comanda;
-	}
-
-	public void setComanda(Comanda comanda) {
-		this.comanda = comanda;
-	}
-
-	
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(comanda, descrição, id, imgUrl, nome, preço, quantidade, temEmEstoque);
+		return Objects.hash(descrição, id, imgUrl, nome, preço, quantidade, temEmEstoque);
 	}
 
 	@Override
@@ -137,7 +133,7 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
-		return Objects.equals(comanda, other.comanda) && Objects.equals(descrição, other.descrição)
+		return Objects.equals(descrição, other.descrição)
 				&& Objects.equals(id, other.id) && Objects.equals(imgUrl, other.imgUrl)
 				&& Objects.equals(nome, other.nome) && Objects.equals(preço, other.preço)
 				&& Objects.equals(quantidade, other.quantidade) && Objects.equals(temEmEstoque, other.temEmEstoque);
@@ -146,13 +142,6 @@ public class Item {
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", nome=" + nome + ", imgUrl=" + imgUrl + ", descrição=" + descrição + ", preço="
-				+ preço + ", quantidade=" + quantidade + ", temEmEstoque=" + temEmEstoque + ", comanda=" + comanda
-				+ "]";
+				+ preço + ", quantidade=" + quantidade + ", temEmEstoque=" + temEmEstoque + "]";
 	}
-	
-	
-	
-	
-	
-	
 }

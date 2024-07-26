@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder("id, pontos, teveFaltaMes")
+@JsonPropertyOrder("id, nome, pontos, teveFaltaMes")
 public class BatedorDePontoDTO extends RepresentationModel<BatedorDePontoDTO> {
 
 	private Long id;

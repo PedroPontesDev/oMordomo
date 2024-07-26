@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devPontes.oMordomo.model.dtos.GarcomDTO;
+import com.devPontes.oMordomo.services.impl.ComandaServicesImpl;
 import com.devPontes.oMordomo.services.impl.GarcomServicesImpl;
+import com.devPontes.oMordomo.services.impl.MesaServicesImpl;
 
 @RestController
 @RequestMapping(path = "/api/v1/garcom")
@@ -25,6 +26,12 @@ public class GarcomController {
 	
 	@Autowired
 	private GarcomServicesImpl garcomServices;
+	
+	@Autowired
+	ComandaServicesImpl comandaServices;
+	
+	@Autowired
+	MesaServicesImpl mesaServices;
 	
 	
 	@GetMapping(path = "/listar-todos")
@@ -70,6 +77,6 @@ public class GarcomController {
 		return ResponseEntity.status(HttpStatus.OK).body("Salário atualizado com sucesso!");
 	}
 	
-
+	/*A IMPLEMENTAR METODOS/FUNÇÕES PARA RESERVAR MESA, ABRIR E FECHAR COMANDAS	*/
 	
 }

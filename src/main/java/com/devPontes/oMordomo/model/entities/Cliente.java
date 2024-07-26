@@ -19,28 +19,32 @@ public class Cliente extends Usuario {
 
 	@Id
 	private Long id;
-	
-	@Column(name = "valor_pago")
-	private Double valorDePagamento;
 
 	@Column(name = "houve_pagamento")
 	private Boolean pagou;
-	
+
 	@OneToOne(mappedBy = "clienteComanda")
 	private Comanda comandaCliente;
 
-	public Cliente(Long id, String fullName, String email, String username, String password, Long cpf, Double valorDePagamento,
-			Boolean pagou, Comanda comanda) {
+	@Column(name = "valor_pago")
+	private Double valorDePagamento;
+
+	@Column(name = "num_frequencia_consumo")
+	private Integer frequenciaDeConsumo;
+
+	public Cliente(Long id, String fullName, String email, String username, String password, Long cpf, Boolean pagou,
+			Comanda comandaCliente, Double valorDePagamento, Integer frequenciaDeConsumo) {
 		super(id, fullName, email, username, password, cpf);
-		this.valorDePagamento = valorDePagamento;
 		this.pagou = pagou;
-		this.comandaCliente = comanda;
+		this.comandaCliente = comandaCliente;
+		this.valorDePagamento = valorDePagamento;
+		this.frequenciaDeConsumo = frequenciaDeConsumo;
 	}
 
 	public Cliente() {
 
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -64,8 +68,14 @@ public class Cliente extends Usuario {
 	public void setValorDePagamento(Double valorDePagamento) {
 		this.valorDePagamento = valorDePagamento;
 	}
-	
-	
+
+	public Integer getFrequenciaDeConsumo() {
+		return frequenciaDeConsumo;
+	}
+
+	public void setFrequenciaDeConsumo(Integer frequenciaDeConsumo) {
+		this.frequenciaDeConsumo = frequenciaDeConsumo;
+	}
 
 	public Comanda getComandaCliente() {
 		return comandaCliente;

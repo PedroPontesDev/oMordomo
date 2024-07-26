@@ -2,19 +2,19 @@ package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -35,37 +35,34 @@ public class Comanda implements Serializable {
 	@Column(name = "dia_pedido")
 	private LocalDate diaPedido;
 
-	@Column(name = "nota_atendimento")
-	private Integer[] notaAtendimento = new Integer[5];
-	
+	@ManyToMany(mappedBy = "comandas")
+	private Set<Item> items = new TreeSet<>();
+
 	@ManyToOne
 	@JoinColumn(name = "garcom_id")
-	Garcom garcomComanda;
+	private Garcom garcomComanda;
 
 	@OneToOne
 	@JoinColumn(name = "cliente_id")
-	Cliente clienteComanda;
+	private Cliente clienteComanda;
 
 	@OneToOne
 	@JoinColumn(name = "mesa_id")
-	Mesa mesa;
-	
-	
-	@OneToMany(mappedBy = "comanda", fetch = FetchType.EAGER)
-	private List<Item> items = new ArrayList<>();
-	
+	private Mesa mesa;
 
-	public Comanda(Long id, Double subTotal, Double total, LocalDate diaPedido, Integer[] notaAtendimento,
-			Garcom garcomComanda, Cliente clienteComanda, Mesa mesa, List<Item> items) {
+	private boolean estaFechada;
+
+	public Comanda(Long id, Double subTotal, Double total, LocalDate diaPedido, Garcom garcomComanda,
+			Cliente clienteComanda, Mesa mesa, Set<Item> items, boolean estaFechada) {
 		this.id = id;
 		this.subTotal = subTotal;
 		this.total = total;
 		this.diaPedido = diaPedido;
-		this.notaAtendimento = notaAtendimento;
 		this.garcomComanda = garcomComanda;
 		this.clienteComanda = clienteComanda;
 		this.mesa = mesa;
 		this.items = items;
+		this.estaFechada = estaFechada;
 	}
 
 	public Comanda() {
@@ -80,16 +77,8 @@ public class Comanda implements Serializable {
 		this.id = id;
 	}
 
-	public List<Item> getItems() {
+	public Set<Item> getItems() {
 		return items;
-	}
-	
-	public Integer[] getNotaAtendimento() {
-		return notaAtendimento;
-	}
-
-	public void setNotaAtendimento(Integer[] notaAtendimento) {
-		this.notaAtendimento = notaAtendimento;
 	}
 
 	public Double getSubTotal() {
@@ -140,6 +129,14 @@ public class Comanda implements Serializable {
 		this.mesa = mesa;
 	}
 
+	public boolean isEstaFechada() {
+		return estaFechada;
+	}
+
+	public void setEstaFechada(boolean estaFechada) {
+		this.estaFechada = estaFechada;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(diaPedido, id, items, subTotal, total);
@@ -161,8 +158,9 @@ public class Comanda implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Comanda [id=" + id + ", items=" + items + ", subTotal=" + subTotal + ", total=" + total + ", diaPedido="
-				+ diaPedido + "]";
+		return "Comanda [id=" + id + ", subTotal=" + subTotal + ", total=" + total + ", diaPedido=" + diaPedido
+				+ ", items=" + items + ", garcomComanda=" + garcomComanda + ", clienteComanda=" + clienteComanda
+				+ ", mesa=" + mesa + ", estaFechada=" + estaFechada + "]";
 	}
 
 }

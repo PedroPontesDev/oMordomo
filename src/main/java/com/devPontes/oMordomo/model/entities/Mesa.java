@@ -25,34 +25,27 @@ public class Mesa implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "identificador", unique = true)
+	@Column(name = "numero", unique = false)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
 	private StatusMesa statusMesa;
+	
+	@Column(name = "dia_reserva")
+	private LocalDateTime diaDaReserva;
+	
+	@Column(name = "esta_reservada")
+	private Boolean estaReservada;
 
-	@OneToOne(mappedBy = "mesa", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "mesa")
 	private Comanda comanda;
 
-	@Column(name = "horario_ocupacao")
-	private LocalDateTime horarioOcupacao;
-
-	@Column(name = "horario_desocupacao")
-    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT", shape = Shape.STRING)
-	private LocalDateTime horarioSaida;
-
-	@Column(name = "total_horas_ocupacao")
-    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT", shape = Shape.STRING)
-	private Long totalDeHorasMesa;
-
-	public Mesa(Long id, StatusMesa statusMesa, Comanda comanda, LocalDateTime horarioOcupacao,
-			LocalDateTime horarioSaida, Long totalDeHorasMesa) {
+	public Mesa(Long id, StatusMesa statusMesa, LocalDateTime diaDaReserva, Boolean estaReservada, Comanda comanda) {
 		this.id = id;
 		this.statusMesa = statusMesa;
+		this.diaDaReserva = diaDaReserva;
+		this.estaReservada = estaReservada;
 		this.comanda = comanda;
-		this.horarioOcupacao = horarioOcupacao;
-		this.horarioSaida = horarioSaida;
-		this.totalDeHorasMesa = totalDeHorasMesa;
 	}
 
 	public Long getId() {
@@ -61,30 +54,6 @@ public class Mesa implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getHorarioOcupacao() {
-		return horarioOcupacao;
-	}
-
-	public void setHorarioOcupacao(LocalDateTime horarioOcupacao) {
-		this.horarioOcupacao = horarioOcupacao;
-	}
-
-	public LocalDateTime getHorarioSaida() {
-		return horarioSaida;
-	}
-
-	public void setHorarioSaida(LocalDateTime horarioSaida) {
-		this.horarioSaida = horarioSaida;
-	}
-
-	public Long getTotalDeHorasMesa() {
-		return totalDeHorasMesa;
-	}
-
-	public void setTotalDeHorasMesa(Long totalDeHorasMesa) {
-		this.totalDeHorasMesa = totalDeHorasMesa;
 	}
 
 	public StatusMesa getStatusMesa() {
@@ -101,6 +70,25 @@ public class Mesa implements Serializable {
 
 	public void setComanda(Comanda comanda) {
 		this.comanda = comanda;
+	}
+
+	public LocalDateTime getDiaDaReserva() {
+		return diaDaReserva;
+	}
+
+	public void setDiaDaReserva(LocalDateTime diaDaReserva) {
+		this.diaDaReserva = diaDaReserva;
+	}
+	
+
+	public Boolean getEstaReservada() {
+		if(statusMesa == StatusMesa.RESERVADA) {
+			return true;
+		} return false;
+	}
+	
+	public void setEstaReservada(Boolean estaReservada) {
+		this.estaReservada = estaReservada;
 	}
 
 	@Override
