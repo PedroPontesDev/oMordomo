@@ -1,84 +1,94 @@
 package com.devPontes.oMordomo.services.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.devPontes.oMordomo.model.dtos.ComandaDTO;
-import com.devPontes.oMordomo.model.dtos.GarcomDTO;
 import com.devPontes.oMordomo.model.dtos.ItemDTO;
-import com.devPontes.oMordomo.model.dtos.MesaDTO;
-import com.devPontes.oMordomo.model.entities.Comanda;
-import com.devPontes.oMordomo.model.entities.Garcom;
-import com.devPontes.oMordomo.model.entities.Ponto;
-import com.devPontes.oMordomo.model.enums.StatusMesa;
+import com.devPontes.oMordomo.model.entities.Item;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
-import com.devPontes.oMordomo.repositories.GarcomRepository;
-import com.devPontes.oMordomo.repositories.PontoRepository;
-import com.devPontes.oMordomo.services.GarcomServices;
+import com.devPontes.oMordomo.repositories.ComandaRepository;
+import com.devPontes.oMordomo.repositories.ItemRepository;
 import com.devPontes.oMordomo.services.ItemServices;
-import com.devPontes.oMordomo.services.MesaServices;
 
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional(rollbackOn = ItemServicesImpl.class)
 public class ItemServicesImpl implements ItemServices {
 
+	@Autowired
+	ItemRepository itemRepository;
+	
+	@Autowired
+	ComandaRepository comandaRepository;
+
 	@Override
-	public ItemDTO registarNovoItem(ItemDTO novoItem) {
+	public ItemDTO registarNovoItem(ItemDTO novoItem) throws Exception { //Tempo total de Execução -> O(1)
+		Item item = MyMapper.parseObject(novoItem, Item.class);
+		if(item != null) {
+			return MyMapper.parseObject(itemRepository.save(item), ItemDTO.class);  //Tempo de Execução -> O(1)
+		} throw new Exception("Não foi possivel inserir novo item no banco!");
+	}
+
+	@Override
+	public ItemDTO atualizarItem(Long itemExistenteId, ItemDTO updated) throws Exception { //Tempo total de Execução -> O(1)
+		Item itemExistente = itemRepository.findById(itemExistenteId)
+					.orElseThrow(() -> new Exception("Item com ID: " + itemExistenteId + " Não encontrado! ")); //Tempo de Execução -> O(1)
+		itemExistente.setDescrição(updated.getDescrição());
+		itemExistente.setImgUrl(updated.getImgUrl());
+		itemExistente.setNome(updated.getNome());
+		itemExistente.setPreço(updated.getPreço());
+		itemExistente.setQuantidade(updated.getQuantidade());
+		itemExistente.setTemEmEstoque(updated.getTemEmEstoque());
+		return MyMapper.parseObject(itemRepository.save(itemExistente), ItemDTO.class); //Tempo de Execução -> O(1)		
+	}
+
+	@Override
+	public void deletarItem(Long itemId) throws Exception { //Tempo total de Execução -> O(1)
+		var itemExistente = itemRepository.findById(itemId)
+				.orElseThrow(() -> new Exception("Item não encontrado com o ID:" + itemId));
+		itemRepository.delete(itemExistente);
+	}
+
+	@Override
+	public boolean verificarSeTemEmEstoqueByNome(String nomeProdutoParam) throws Exception {
+		if(nomeProdutoParam.matches("[0-9][+-]")) throw new Exception("Um nome pessoal não pode conter numeros!");
+		return itemRepository.verificarSeTemEmEstoqueByNome(nomeProdutoParam);
+	}
+
+	@Override
+	public List<ItemDTO> filterByPrecoMaiorOuIgualMedia(Double precoMediaParam) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ItemDTO atualizarItem(Long itemExistenteId, ItemDTO updated) {
+	public List<ItemDTO> findItemsPorNome(String nomeKey, List<ItemDTO> items) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deletarItem(Long itemId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<ItemDTO> filterByPrecoMaiorOuIgualMedia(Double precoMedia) {
+	public List<ItemDTO> findItemsPorPreco(Double preco, List<ItemDTO> items) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ItemDTO> findItemsPorNome(String nome, List<ItemDTO> items) {
+	public List<ItemDTO> sortSelectionItemsPorNome(List<ItemDTO> items) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ItemDTO> findItemsPorPreco(Double preco, List<ItemDTO> items) {
+	public List<ItemDTO> sortSelectionItemsPorPreco(List<ItemDTO> items) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public List<ItemDTO> sortSelectionItemsPorNome(String nome, List<ItemDTO> items) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ItemDTO> sortSelectionItemsPorPreco(Double preco, List<ItemDTO> items) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	
 }

@@ -68,7 +68,7 @@ public class ComandaServicesImpl implements ComandaServices {
         if (comanda.isEstaFechada()) {
             throw new Exception("Comanda está fechada, não foi possível adicionar o item!");
         }
-        comanda.getItems().add(item);
+        comanda.getItems().add(item); //Inserção do tipo O(1) Amorterizado
         comandaRepository.save(comanda);	//O(1)
     }
 	
@@ -97,6 +97,8 @@ public class ComandaServicesImpl implements ComandaServices {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 	
 	
