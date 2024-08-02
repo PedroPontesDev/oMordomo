@@ -84,8 +84,8 @@ public class BatedorPontoController {
 	}
 	
 	@PostMapping(path = "/calcular-horas-funcionario/{funcionarioId}")
-	public ResponseEntity<Long> calcularHorasFuncionarMes(@PathVariable Long funcionarioId) throws Exception {
-		Long total = batedorService.calcularHorasFuncionarioMes(funcionarioId);
+	public ResponseEntity<Long> calcularHorasFuncionarMes(@PathVariable Long funcionarioId, @RequestParam int mesQuery) throws Exception {
+		Long total = batedorService.calcularHorasFuncionarioMes(funcionarioId, mesQuery);
 		return ResponseEntity.ok(total);
 	}
 	

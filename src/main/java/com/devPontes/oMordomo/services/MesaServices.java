@@ -23,8 +23,6 @@ public interface MesaServices {
 	
 	void ocuparMesa(Long mesaId, String statusMesa) throws Exception;
 	
-	void registrarHistoricoDeOcupacao(Long mesaId, LocalDateTime horarioInicio, LocalDateTime horarioFim) throws Exception;
-	
 	void excluirMesa(Long mesaId);
 	
 	// Método para adicionar uma lista de itens na comanda

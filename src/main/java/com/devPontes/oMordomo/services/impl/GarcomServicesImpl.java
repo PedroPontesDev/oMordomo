@@ -172,7 +172,8 @@ public class GarcomServicesImpl implements GarcomServices {
 	@Override
 	public void fecharComanda(Long comandaId) throws Exception {
 		// TODO Auto-generated method stub
-		
+		//A TERMINAR IMPLEMENTAÇÃO! 
+
 	}
 
 	@Override

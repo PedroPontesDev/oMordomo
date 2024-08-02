@@ -79,11 +79,6 @@ public class MesaServicesImpl implements MesaServices {
 	}
 
 	@Override
-	public void registrarHistoricoDeOcupacao(Long mesaId, LocalDateTime horarioInicio, LocalDateTime horarioFim) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
 	public void excluirMesa(Long mesaId) {
 		// TODO Auto-generated method stub
 		

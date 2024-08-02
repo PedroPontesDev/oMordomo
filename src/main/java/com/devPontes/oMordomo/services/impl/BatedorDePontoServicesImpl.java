@@ -2,10 +2,10 @@ package com.devPontes.oMordomo.services.impl;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,6 @@ import com.devPontes.oMordomo.model.dtos.PontoDTO;
 import com.devPontes.oMordomo.model.entities.BatedorDePonto;
 import com.devPontes.oMordomo.model.entities.Garcom;
 import com.devPontes.oMordomo.model.entities.Ponto;
-import com.devPontes.oMordomo.model.entities.Usuario;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.BatedorPontoRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
@@ -125,33 +124,30 @@ public class BatedorDePontoServicesImpl implements BatedorDePontoServices {
 	}
 
 	@Override
-	public Long calcularHorasFuncionarioMes(Long funcionarioId) throws Exception {
-	    Long totalHoras = 0L;
-	    var entidadeOptional = garcomRepository.findById(funcionarioId);
-	    if (entidadeOptional.isPresent()) {
-	        Garcom garcom = entidadeOptional.get();
-	        Map<Integer, Long> horasPorMes = new HashMap<>();
-
-	        for (Ponto ponto : garcom.getPontos()) {
-	            if (ponto.getHorarioEntrada() != null && ponto.getHorarioSaida() != null) {
-	                int mes = ponto.getHorarioEntrada().getMonthValue();
-	                Long horas = Duration.between(ponto.getHorarioEntrada(), ponto.getHorarioSaida()).toHours();
-	                horasPorMes.put(mes, horasPorMes.getOrDefault(mes, 0L) + horas);
-	            } else {
-	                System.out.println("Ponto com horário de entrada ou saída nulo: " + ponto);
-	            }
-	        }
-
-	        totalHoras = horasPorMes.values().stream().mapToLong(Long::longValue).sum();
-	        garcom.setHorasTrabalhadasMes(totalHoras);
-	        System.out.println("Garcom antes de salvar: " + garcom);
-	        garcomRepository.save(garcom);
-	        return totalHoras;
-	    } else {
-	        throw new Exception("Não é possível calcular total de horas, verifique os dados e tente novamente!");
-	    }
+	public Long calcularHorasFuncionarioMes(Long funcionarioId, int mesDesejado) throws Exception {
+		Long totalHoras = 0L;
+		Integer mesQuery = mesDesejado;
+		var entidadeFuncionario = garcomRepository.findById(funcionarioId); // O(1)
+		if (entidadeFuncionario.isPresent()) {
+			Garcom garcom = entidadeFuncionario.get();
+			Long totalHorasPorMes = 0l;
+			for (Ponto ponto : garcom.getPontos()) {
+				if(mesQuery == ponto.getHorarioEntrada().getMonthValue()) {
+					if (ponto.getHorarioEntrada() != null && ponto.getHorarioSaida() != null) {
+						Long total = Duration.between(ponto.getHorarioEntrada(), ponto.getHorarioSaida()).toHours();
+						totalHoras = total;
+					} else {
+						throw new Exception("Mês desejado o usuario provalvemente teve falta!");
+					}
+				}
+			}
+			garcom.setHorasTrabalhadasMes(totalHoras);
+			garcomRepository.save(garcom);
+			return totalHoras;
+		} else {
+			throw new Exception("Não é possível calcular total de horas, verifique os dados e tente novamente!");
+		}
 	}
-
 
 	@Override
 	public Double calcularBonusSalario(Long funcionarioId, Double reajuste) throws Exception {
