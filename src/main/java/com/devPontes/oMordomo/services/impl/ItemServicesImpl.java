@@ -15,7 +15,7 @@ import com.devPontes.oMordomo.services.ItemServices;
 import jakarta.transaction.Transactional;
 
 @Service
-@Transactional(rollbackOn = ItemServicesImpl.class)
+@Transactional
 public class ItemServicesImpl implements ItemServices {
 
 	@Autowired
@@ -54,7 +54,6 @@ public class ItemServicesImpl implements ItemServices {
 
 	@Override
 	public boolean verificarSeTemEmEstoqueByNome(String nomeProdutoParam) throws Exception {
-		if(nomeProdutoParam.matches("[0-9][+-]")) throw new Exception("Um nome pessoal não pode conter numeros!");
 		return itemRepository.verificarSeTemEmEstoqueByNome(nomeProdutoParam);
 	}
 

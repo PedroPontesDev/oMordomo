@@ -9,13 +9,11 @@ import org.springframework.data.repository.query.Param;
 import com.devPontes.oMordomo.model.entities.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-	
-	@Query(value = "SELECT * FROM tb_item WHERE preco >= :precoMedia OR preco <= :precoMedia", nativeQuery = true)
-	public List<Item> filterByPrecoMaiorOuIgualMedia(@Param("precoMedia") Double precoMedia); //Primeiro metodo de ItemsServices feito por Query Params
-	
-	@Query(value = "SELECT CASE WEHN COUNT(i) > 0 THEN TRUE ELSE FALSE END" 
-												+ "FROM Item i WHERE i.nome = :nomeProduto AND i.quantidade > 0" , nativeQuery = false)
-	public boolean verificarSeTemEmEstoqueByNome(@Param("nomeProduto") String nomeProduto); 
-
-	
+    
+    @Query(value = "SELECT * FROM tb_item WHERE preco >= :precoMedia OR preco <= :precoMedia", nativeQuery = true)
+    public List<Item> filterByPrecoMaiorOuIgualMedia(@Param("precoMedia") Double precoMedia); // Primeiro método de ItemsServices feito por Query Params
+    
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END " 
+                   + "FROM tb_item WHERE nome = :nomeProduto AND quantidade > 0", nativeQuery = true)
+    public boolean verificarSeTemEmEstoqueByNome(@Param("nomeProduto") String nomeProduto); 
 }

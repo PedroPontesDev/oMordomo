@@ -25,7 +25,6 @@ public class Mesa implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "numero", unique = false)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
