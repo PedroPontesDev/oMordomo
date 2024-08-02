@@ -4,33 +4,24 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.devPontes.oMordomo.model.enums.StatusMesa;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class MesaDTO {
 
     private Long id;
     private StatusMesa statusMesa;
-    private Long comandaId;
-    
-    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT", shape = Shape.STRING)
-    private LocalDateTime horarioOcupacao;
-  
-    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT", shape = Shape.STRING)
-    private LocalDateTime horarioSaida;
-    
-    private Long totalDeHorasMesa;
+    private LocalDateTime diaDaReserva;
+    private Boolean estaReservada;
+    private ComandaDTO comanda;
 
-    public MesaDTO(Long id, StatusMesa statusMesa, Long comandaId, LocalDateTime horarioOcupacao,
-            LocalDateTime horarioSaida, Long totalDeHorasMesa) {
+    public MesaDTO(Long id, StatusMesa statusMesa, LocalDateTime diaDaReserva, Boolean estaReservada, ComandaDTO comanda) {
         this.id = id;
         this.statusMesa = statusMesa;
-        this.comandaId = comandaId;
-        this.horarioOcupacao = horarioOcupacao;
-        this.horarioSaida = horarioSaida;
-        this.totalDeHorasMesa = totalDeHorasMesa;
+        this.diaDaReserva = diaDaReserva;
+        this.estaReservada = estaReservada;
+        this.comanda = comanda;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -47,36 +38,28 @@ public class MesaDTO {
         this.statusMesa = statusMesa;
     }
 
-    public Long getComandaId() {
-        return comandaId;
+    public LocalDateTime getDiaDaReserva() {
+        return diaDaReserva;
     }
 
-    public void setComandaId(Long comandaId) {
-        this.comandaId = comandaId;
+    public void setDiaDaReserva(LocalDateTime diaDaReserva) {
+        this.diaDaReserva = diaDaReserva;
     }
 
-    public LocalDateTime getHorarioOcupacao() {
-        return horarioOcupacao;
+    public Boolean getEstaReservada() {
+        return estaReservada;
     }
 
-    public void setHorarioOcupacao(LocalDateTime horarioOcupacao) {
-        this.horarioOcupacao = horarioOcupacao;
+    public void setEstaReservada(Boolean estaReservada) {
+        this.estaReservada = estaReservada;
     }
 
-    public LocalDateTime getHorarioSaida() {
-        return horarioSaida;
+    public ComandaDTO getComanda() {
+        return comanda;
     }
 
-    public void setHorarioSaida(LocalDateTime horarioSaida) {
-        this.horarioSaida = horarioSaida;
-    }
-
-    public Long getTotalDeHorasMesa() {
-        return totalDeHorasMesa;
-    }
-
-    public void setTotalDeHorasMesa(Long totalDeHorasMesa) {
-        this.totalDeHorasMesa = totalDeHorasMesa;
+    public void setComanda(ComandaDTO comanda) {
+        this.comanda = comanda;
     }
 
     @Override
@@ -98,8 +81,6 @@ public class MesaDTO {
 
     @Override
     public String toString() {
-        return "MesaDTO [id=" + id + ", statusMesa=" + statusMesa + ", comandaId=" + comandaId + ", horarioOcupacao="
-                + horarioOcupacao + ", horarioSaida=" + horarioSaida + ", totalDeHorasMesa=" + totalDeHorasMesa + "]";
+        return "MesaDTO [id=" + id + ", statusMesa=" + statusMesa + ", diaDaReserva=" + diaDaReserva + ", estaReservada=" + estaReservada + ", comanda=" + comanda + "]";
     }
-
 }
