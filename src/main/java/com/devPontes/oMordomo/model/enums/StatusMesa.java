@@ -4,7 +4,7 @@ public enum StatusMesa {
 	
 	LIVRE, OCUPADA, RESERVADA;
 	
-	public StatusMesa parseValue(String status) {
+	public static StatusMesa parseValue(String status) {
 		if(status == null) {
 			throw new IllegalArgumentException("O status que você está passando está nulo");
 		}

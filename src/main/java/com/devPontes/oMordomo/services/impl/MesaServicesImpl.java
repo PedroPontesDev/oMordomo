@@ -9,6 +9,7 @@ import com.devPontes.oMordomo.model.dtos.MesaDTO;
 import com.devPontes.oMordomo.model.entities.Mesa;
 import com.devPontes.oMordomo.model.enums.StatusMesa;
 import com.devPontes.oMordomo.model.mapper.MyMapper;
+import com.devPontes.oMordomo.repositories.ComandaRepository;
 import com.devPontes.oMordomo.repositories.MesaRepository;
 import com.devPontes.oMordomo.services.MesaServices;
 
@@ -17,6 +18,9 @@ public class MesaServicesImpl implements MesaServices {
 
 	@Autowired
 	private MesaRepository mesaRepository;
+	
+	@Autowired
+	private ComandaRepository comandaRepository;
 	
 	@Override
 	public List<MesaDTO> exibirTodasMesas() throws Exception {
@@ -75,8 +79,16 @@ public class MesaServicesImpl implements MesaServices {
 	}
 
 	@Override
-	public void ocuparMesa(Long mesaId, String statusMesa) {
-		// TODO Auto-generated method stub
+	public void ocuparMesa(Long mesaId, String statusMesa, Long comandId) throws Exception {
+		var mesa = mesaRepository.findById(mesaId)
+						.orElseThrow(() -> new Exception("Mesa não encontrada com o ID" + mesaId));
+		
+		if(mesa != null) {
+			mesa.setEstaReservada(true);
+			mesa.setStatusMesa(StatusMesa.parseValue(statusMesa));
+			mesa.setComanda(comandaRepository.findById(comandId));
+			
+		} throw new Exception("");
 		
 	}
 
