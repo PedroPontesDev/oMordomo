@@ -4,4 +4,5 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class UsuarioDTO extends RepresentationModel<UsuarioDTO> {
 		
+	
 }

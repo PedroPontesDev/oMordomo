@@ -21,7 +21,7 @@ public interface ItemServices {
 	
 	public List<ItemDTO> findItemsPorNome(String nomeKey, List<Long> itemsIds) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
 	
-	public List<ItemDTO> findItemsPorPreco(Double preco, List<ItemDTO> items) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
+	public List<ItemDTO> findItemsPorPreco(Double precoKey, List<Long> itemsIds) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
 	
 	public List<ItemDTO> sortSelectionItemsPorNome(List<ItemDTO> items) throws Exception; //Tempo de execução -> O(n²) porque percorrre duas vezes
 	

@@ -16,4 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END " 
                    + "FROM tb_item WHERE nome = :nomeProduto AND quantidade > 0", nativeQuery = true)
     public boolean verificarSeTemEmEstoqueByNome(@Param("nomeProduto") String nomeProduto); 
+    
+    
 }
