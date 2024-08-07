@@ -1,5 +1,7 @@
 package com.devPontes.oMordomo.services.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,14 +61,38 @@ public class ItemServicesImpl implements ItemServices {
 
 	@Override
 	public List<ItemDTO> filterByPrecoMaiorOuIgualMedia(Double precoMediaParam) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		var itemsPrecoMedia = itemRepository.filterByPrecoMaiorOuIgualMedia(precoMediaParam);
+		return MyMapper.parseListObjects(itemsPrecoMedia, ItemDTO.class);
 	}
 
 	@Override
-	public List<ItemDTO> findItemsPorNome(String nomeKey, List<ItemDTO> items) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ItemDTO> findItemsPorNome(String nomeKey, List<Long> itemsIds) throws Exception {
+		var items = itemRepository.findAllById(itemsIds);
+		items.sort(Comparator.comparing(Item::getNome));
+		
+		int indiceBaixo = 0;
+		int indiceAlto = items.size() - 1;
+		
+		List<ItemDTO> founds = new ArrayList<>();
+		
+		while(indiceBaixo < indiceAlto) {
+			int indiceMeio = indiceBaixo + (indiceAlto - indiceBaixo) / 2;
+			String valorMeio = items.get(indiceMeio).getNome();
+			
+			int comparacao = valorMeio.compareTo(nomeKey);
+			
+			if(comparacao < 0) {
+				indiceBaixo = indiceMeio + 1;  // Procurar na metade direita
+				
+			} else if (comparacao > 0) {
+				indiceAlto = indiceMeio - 1; // Procurar na metade esquerda
+				
+			} else {
+				founds.add(MyMapper.parseObject(items.get(indiceMeio), ItemDTO.class));
+				break;
+			}
+		}
+		return founds;
 	}
 
 	@Override

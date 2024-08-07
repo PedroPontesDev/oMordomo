@@ -19,7 +19,7 @@ public interface ItemServices {
 	
 	public List<ItemDTO> filterByPrecoMaiorOuIgualMedia(Double precoMediaParam) throws Exception; //QueryParam Consulta De Filtro com Tempo de Execução -> O(1)
 	
-	public List<ItemDTO> findItemsPorNome(String nomeKey, List<ItemDTO> items) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
+	public List<ItemDTO> findItemsPorNome(String nomeKey, List<Long> itemsIds) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
 	
 	public List<ItemDTO> findItemsPorPreco(Double preco, List<ItemDTO> items) throws Exception; // Tempo de execucao -> O(log n) Pesquisa Binária 
 	

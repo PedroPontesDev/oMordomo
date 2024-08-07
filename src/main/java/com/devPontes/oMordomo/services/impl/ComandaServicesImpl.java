@@ -47,8 +47,8 @@ public class ComandaServicesImpl implements ComandaServices {
 			comanda.setTotal(0D);
 			comanda.setGarcomComanda(garcom);
 			comanda.setMesa(mesa);
-			comandaRepository.save(comanda); //Tempo de execução (1) para essa função
-			return MyMapper.parseObject(comanda, ComandaDTO.class); // Retorna a comanda criada (1)
+			comandaRepository.save(comanda); //Tempo de execução O(1) para essa função
+			return MyMapper.parseObject(comanda, ComandaDTO.class); // Retorna a comanda criada O(1)
 		} throw new Exception("Não foi possivel registar uma nova comanda");
 	
 	}

@@ -24,64 +24,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping(path = "/api/v1/garcom")
-@Tag(name = "Gerenciamento De Garcom")
+@RequestMapping(path = "/api/v1/mesas")
+@Tag(name = "Gerenciamento De Mesas")
 public class MesaController {
 	
 	@Autowired
-	private GarcomServicesImpl garcomServices;
-	
-	@Autowired
-	ComandaServicesImpl comandaServices;
-	
-	@Autowired
 	MesaServicesImpl mesaServices;
-	
 
-	@Operation(summary = "", description = "Listar todos garçom da base de dados!", tags = "Gerenciamento De Garçom")
-	@GetMapping(path = "/listar-todos")
-	public ResponseEntity<List<GarcomDTO>> listarTodosGarcoms() throws Exception {
-		var todosGarcom =  garcomServices.listarTodos();
-		return new ResponseEntity<>(todosGarcom, HttpStatus.ACCEPTED);
-	}
-	
-	@GetMapping(path = "/search/buscar-id/{id}")
-	public ResponseEntity<GarcomDTO> buscarPorId(@PathVariable Long id) throws Exception {
-		var garcom = garcomServices.procurarPorId(id);
-		return new ResponseEntity<>(garcom, HttpStatus.OK);
-		
-	}
-	
-	@GetMapping(path = "/search/buscar-cpf")
-	public ResponseEntity<GarcomDTO> buscarPorCpf(@RequestParam Long cpf) throws Exception{
-		var garcom = garcomServices.procurarPorCpf(cpf);
-		return new ResponseEntity<>(garcom, HttpStatus.FOUND);
-	}
-	
-	@PostMapping(path = "/registrar-garcom")
-	public ResponseEntity<GarcomDTO> registrarGarcom(@RequestBody GarcomDTO novoGarcom) throws Exception {
-		GarcomDTO novaEntidade = garcomServices.registrarNovoGarcom(novoGarcom);
-		return new ResponseEntity<>(novaEntidade, HttpStatus.CREATED);
-	}
-	
-	@PutMapping(path = "/atualizar-garcom/{id}")
-	public ResponseEntity<GarcomDTO> atualizarGarcomExistente(@PathVariable Long id, @RequestBody GarcomDTO updateGarcom) throws Exception {
-		var garcomUpdated = garcomServices.atualizarGarcomExistente(id, updateGarcom);
-		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
-	}
-	
-	@PatchMapping(path = "/atualizar-cpf/{id}/{novoCpf}")
-	public ResponseEntity<GarcomDTO> atualizarCpfGarcom(@PathVariable Long id, @PathVariable Long novoCpf) throws Exception {
-		var garcomUpdated = garcomServices.alterarCpfGarcom(id, novoCpf);
-		return ResponseEntity.status(HttpStatus.OK).body(garcomUpdated);
-	}
-	
-	@PatchMapping(path = "/atualizar-salario/{garcomId}")
-	public ResponseEntity<String> alterSalarioGarcom(@PathVariable Long garcomId, @RequestParam Double novoSalario) throws Exception {
-		garcomServices.alterarSalarioGarcom(garcomId, novoSalario);
-		return ResponseEntity.status(HttpStatus.OK).body("Salário atualizado com sucesso!");
-	}
-	
 	/*A IMPLEMENTAR METODOS/FUNÇÕES PARA RESERVAR MESA, ABRIR E FECHAR COMANDAS	*/
 	
 }

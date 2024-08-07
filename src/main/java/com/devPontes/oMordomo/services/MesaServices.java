@@ -17,9 +17,9 @@ public interface MesaServices {
 	
 	MesaDTO atualizarMesa(Long mesaExistenteId, MesaDTO update) throws Exception;
 	
-	MesaDTO visualizarEstadoMesa(Long mesaId, String statusMesa) throws Exception;
+	StatusMesa visualizarEstadoMesa(Long mesaId, String statusMesa) throws Exception;
 	
-	MesaDTO atualizarEstadoDeMesa(String status, StatusMesa statusMesa, Long mesaId) throws Exception;
+	MesaDTO atualizarEstadoAtualDeMesa(String status, StatusMesa statusMesa, Long mesaId) throws Exception;
 	
 	void ocuparMesa(Long mesaId, String statusMesa, Long comandaId) throws Exception;
 	
