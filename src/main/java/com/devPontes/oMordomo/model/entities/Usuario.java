@@ -1,22 +1,20 @@
 package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -24,7 +22,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "usuario_tipo", discriminatorType = DiscriminatorType.STRING)
-public abstract class Usuario implements Serializable {
+public abstract class Usuario implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,6 +31,7 @@ public abstract class Usuario implements Serializable {
 
 	@Column(name = "nome_completo")
 	private String fullName;
+	
 	@Column
 	private String email;
 
@@ -54,21 +53,29 @@ public abstract class Usuario implements Serializable {
 	private String username;
 	
 	private String password;
+	
+	@ManyToMany
+	private List<Permissao> permissoes = new ArrayList<>();
 
-
-	public Usuario(Long id, String fullName, String email, String username, String password, Long cpf) {
+	public Usuario(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired,
+			Boolean accountNonLocked, Boolean credentialsNonExpired, Boolean enabled, String username, String password,
+			List<Permissao> permissoes) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
+		this.cpf = cpf;
+		this.accountNonExpired = accountNonExpired;
+		this.accountNonLocked = accountNonLocked;
+		this.credentialsNonExpired = credentialsNonExpired;
+		this.enabled = enabled;
 		this.username = username;
 		this.password = password;
-		this.cpf = cpf;
+		this.permissoes = permissoes;
 	}
 
 	public Usuario() {
-
+		
 	}
-
 	/*
 	 * public List<String> getRoles() { List<String> roles = new ArrayList<>(); for
 	 * (Permissão permission : permissions) {

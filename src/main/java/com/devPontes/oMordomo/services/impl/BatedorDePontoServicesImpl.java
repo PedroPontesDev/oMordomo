@@ -19,7 +19,7 @@ import com.devPontes.oMordomo.model.mapper.MyMapper;
 import com.devPontes.oMordomo.repositories.BatedorPontoRepository;
 import com.devPontes.oMordomo.repositories.GarcomRepository;
 import com.devPontes.oMordomo.repositories.PontoRepository;
-import com.devPontes.oMordomo.repositories.UsuarioRepository;
+import com.devPontes.oMordomo.security.repositories.UsuarioRepository;
 import com.devPontes.oMordomo.services.BatedorDePontoServices;
 import com.devPontes.oMordomo.services.exceptions.ResourceNotFoundException;
 

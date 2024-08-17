@@ -2,10 +2,13 @@ package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,6 +16,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -42,21 +46,32 @@ public class Garcom extends Usuario implements Serializable {
 	@OneToMany(mappedBy = "garcomComanda", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Comanda> comandas = new TreeSet<>();
 
-	public Garcom(Long id, String fullName, String email, String username, String password, Long cpf, Double salario,
-			Long horasTrabalhadasMes, List<Ponto> pontos, Boolean teveFalta, Set<Comanda> comandas) {
-		super(id, fullName, email, username, password, cpf);
+	@ManyToMany
+	private List<Permissao> permissoes = new ArrayList<>();
+
+	public Garcom(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired, Boolean accountNonLocked,
+			Boolean credentialsNonExpired, Boolean enabled, String username, String password,
+			List<Permissao> permissoes,  Double salario, Long horasTrabalhadasMes, List<Ponto> pontos,
+			Boolean teveFalta, Set<Comanda> comandas, List<Permissao> permissoes2) {
+		super(id, fullName, email, cpf, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled, username,
+				password, permissoes);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
 		this.comandas = comandas;
+		permissoes = permissoes2;
 	}
-
+	
 	public Garcom() {
-
+		
 	}
-	
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public String getFullName() {

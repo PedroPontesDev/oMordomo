@@ -1,11 +1,12 @@
 cors:
   originPatterns:
     - http://localhost:8080
+    - http://localhost:3030
     
 security:
   jwt:
     token:
-      secret-key: 53cr37
+      secret-key: 3333001
       expire-length: 3600000
 spring:
   datasource:

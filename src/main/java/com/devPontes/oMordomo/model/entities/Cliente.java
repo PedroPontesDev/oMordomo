@@ -1,11 +1,17 @@
 package com.devPontes.oMordomo.model.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -32,9 +38,15 @@ public class Cliente extends Usuario {
 	@Column(name = "num_frequencia_consumo")
 	private Integer frequenciaDeConsumo;
 
-	public Cliente(Long id, String fullName, String email, String username, String password, Long cpf, Boolean pagou,
-			Comanda comandaCliente, Double valorDePagamento, Integer frequenciaDeConsumo) {
-		super(id, fullName, email, username, password, cpf);
+	@ManyToMany
+	private List<Permissao> permissoes = new ArrayList<>();
+
+	public Cliente(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired,
+			Boolean accountNonLocked, Boolean credentialsNonExpired, Boolean enabled, String username, String password,
+			List<Permissao> permissoes, Boolean pagou, Comanda comandaCliente, Double valorDePagamento,
+			Integer frequenciaDeConsumo, List<Permissao> permissoes2) {
+		super(id, fullName, email, cpf, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled, username,
+				password, permissoes);
 		this.pagou = pagou;
 		this.comandaCliente = comandaCliente;
 		this.valorDePagamento = valorDePagamento;
@@ -44,8 +56,12 @@ public class Cliente extends Usuario {
 	public Cliente() {
 
 	}
-	
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public String getFullName() {
