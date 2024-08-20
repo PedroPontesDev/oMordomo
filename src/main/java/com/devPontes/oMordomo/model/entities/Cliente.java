@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -11,6 +12,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -38,13 +41,10 @@ public class Cliente extends Usuario {
 	@Column(name = "num_frequencia_consumo")
 	private Integer frequenciaDeConsumo;
 
-	@ManyToMany
-	private List<Permissao> permissoes = new ArrayList<>();
-
 	public Cliente(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired,
 			Boolean accountNonLocked, Boolean credentialsNonExpired, Boolean enabled, String username, String password,
 			List<Permissao> permissoes, Boolean pagou, Comanda comandaCliente, Double valorDePagamento,
-			Integer frequenciaDeConsumo, List<Permissao> permissoes2) {
+			Integer frequenciaDeConsumo) {
 		super(id, fullName, email, cpf, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled, username,
 				password, permissoes);
 		this.pagou = pagou;
@@ -55,12 +55,6 @@ public class Cliente extends Usuario {
 
 	public Cliente() {
 
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -214,6 +208,12 @@ public class Cliente extends Usuario {
 	@Override
 	public int hashCode() {
 		return Objects.hash(valorDePagamento);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

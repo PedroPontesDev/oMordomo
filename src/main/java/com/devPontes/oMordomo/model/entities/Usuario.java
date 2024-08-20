@@ -2,19 +2,28 @@ package com.devPontes.oMordomo.model.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
@@ -22,7 +31,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "usuario_tipo", discriminatorType = DiscriminatorType.STRING)
-public abstract class Usuario implements Serializable, UserDetails {
+public class Usuario implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,7 +40,7 @@ public abstract class Usuario implements Serializable, UserDetails {
 
 	@Column(name = "nome_completo")
 	private String fullName;
-	
+
 	@Column
 	private String email;
 
@@ -49,12 +58,16 @@ public abstract class Usuario implements Serializable, UserDetails {
 
 	@Column(name = "enabled")
 	private Boolean enabled;
-	
+
+	@Column
 	private String username;
-	
+
+	@Column
 	private String password;
 	
-	@ManyToMany
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes = new ArrayList<>();
 
 	public Usuario(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired,
@@ -74,14 +87,18 @@ public abstract class Usuario implements Serializable, UserDetails {
 	}
 
 	public Usuario() {
-		
+
 	}
-	/*
-	 * public List<String> getRoles() { List<String> roles = new ArrayList<>(); for
-	 * (Permissão permission : permissions) {
-	 * 
-	 * } return roles; }
-	 */
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.permissoes.stream().map(role -> new SimpleGrantedAuthority(role.getNome()))
+				.collect(Collectors.toList());
+	}
+
+	public List<Permissao> getPermissoes() {
+		return permissoes;
+	}
 
 	public String getFullName() {
 		return fullName;
@@ -161,6 +178,10 @@ public abstract class Usuario implements Serializable, UserDetails {
 
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
+	}
+
+	public void setPermissoes(List<Permissao> permissoes) {
+		this.permissoes = permissoes;
 	}
 
 	@Override

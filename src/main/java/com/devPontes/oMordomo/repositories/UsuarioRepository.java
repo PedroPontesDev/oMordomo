@@ -1,4 +1,4 @@
-package com.devPontes.oMordomo.security.repositories;
+package com.devPontes.oMordomo.repositories;
 
 import java.util.Optional;
 
@@ -12,6 +12,8 @@ import com.devPontes.oMordomo.model.entities.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	Optional<Usuario> findUsuarioByUsername(String username);
+	
+	@Query(nativeQuery = true, value =  "SELECT * FROM tb_usario WHERE username = :username")
+	Optional<Usuario> findUsuarioByUsername(@Param("username") String username);
 	
 }

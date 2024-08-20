@@ -16,7 +16,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -45,24 +44,20 @@ public class Garcom extends Usuario implements Serializable {
 
 	@OneToMany(mappedBy = "garcomComanda", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Comanda> comandas = new TreeSet<>();
-
-	@ManyToMany
-	private List<Permissao> permissoes = new ArrayList<>();
-
+	
 	public Garcom(Long id, String fullName, String email, Long cpf, Boolean accountNonExpired, Boolean accountNonLocked,
 			Boolean credentialsNonExpired, Boolean enabled, String username, String password,
-			List<Permissao> permissoes,  Double salario, Long horasTrabalhadasMes, List<Ponto> pontos,
-			Boolean teveFalta, Set<Comanda> comandas, List<Permissao> permissoes2) {
+			List<Permissao> permissoes, Double salario, Long horasTrabalhadasMes, List<Ponto> pontos,
+			Boolean teveFalta, Set<Comanda> comandas, List<Permissao> permissao) {
 		super(id, fullName, email, cpf, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled, username,
-				password, permissoes);
+				password, permissao);
 		this.salario = salario;
 		this.horasTrabalhadasMes = horasTrabalhadasMes;
 		this.pontos = pontos;
 		this.teveFalta = teveFalta;
 		this.comandas = comandas;
-		permissoes = permissoes2;
 	}
-	
+
 	public Garcom() {
 		
 	}
