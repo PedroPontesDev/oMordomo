@@ -13,7 +13,6 @@ import com.devPontes.oMordomo.model.entities.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	
-	@Query(nativeQuery = true, value =  "SELECT * FROM tb_usario WHERE username = :username")
-	Optional<Usuario> findUsuarioByUsername(@Param("username") String username);
+	Optional<Usuario> findUsuarioByUsername(String username);
 	
 }

@@ -65,7 +65,6 @@ public class Usuario implements Serializable, UserDetails {
 	@Column
 	private String password;
 	
-	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes = new ArrayList<>();

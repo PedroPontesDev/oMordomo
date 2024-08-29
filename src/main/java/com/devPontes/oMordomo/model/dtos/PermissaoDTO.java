@@ -11,22 +11,13 @@ public class PermissaoDTO implements Serializable {
 
 	private Long id;
 	private String nome;
-
-	@JsonIgnore
-	private List<UsuarioDTO> usuarios = new ArrayList<>();
-
+	
 	public PermissaoDTO() {
 	}
 
-	public PermissaoDTO(Long id, String nome, List<UsuarioDTO> usuarios) {
+	public PermissaoDTO(Long id, String nome) {
 		this.id = id;
 		this.nome = nome;
-		this.usuarios = usuarios;
-	}
-	
-	
-	public List<UsuarioDTO> getUsuarios() {
-		return usuarios;
 	}
 
 	public Long getId() {
@@ -39,10 +30,6 @@ public class PermissaoDTO implements Serializable {
 
 	public String getNome() {
 		return nome;
-	}
-
-	public void setUsuarios(List<UsuarioDTO> usuarios) {
-		this.usuarios = usuarios;
 	}
 
 	public void setNome(String nome) {

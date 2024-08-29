@@ -20,8 +20,8 @@ public class UsuarioDTO extends RepresentationModel<UsuarioDTO> implements Seria
 	private Boolean enabled;
 	private String username;
 	private String password;
-	
 
+	
 	private List<PermissaoDTO> permissoes;
 
 	public UsuarioDTO() {
